@@ -1,4 +1,4 @@
-NAME := fdf
+NAME := program 
 SOURCE := main.c
 
 all: $(NAME) 
@@ -8,3 +8,8 @@ $(NAME): $(SOURCE)
 
 run: all
 	./$(NAME)
+
+fclean:
+	rm -f $(NAME)
+
+re: fclean all
