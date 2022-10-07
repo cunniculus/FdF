@@ -1,0 +1,74 @@
+NAME			:= libftprintf.a
+
+SOURCES_PATH	:= src
+SOURCES			:= $(addprefix $(SOURCES_PATH)/,\
+				   ft_printf.c\
+				   ft_printf_utils.c\
+				   specs_setup.c\
+				   ft_printf_convert.c\
+				   ft_convert_integer.c\
+				   ft_convert_char_and_str.c\
+				   ft_convert_pointer.c\
+				   ft_convert_base.c\
+				   precision.c\
+				   width.c)
+
+OBJECTS			:= ft_printf.o\
+				   ft_printf_utils.o\
+				   specs_setup.o\
+				   ft_printf_convert.o\
+				   ft_convert_integer.o\
+				   ft_convert_char_and_str.o\
+				   ft_convert_pointer.o\
+				   ft_convert_base.o\
+				   precision.o\
+				   width.o
+
+LIBFT_DIR		:= libft
+INCLUDES		:= $(LIBFT_DIR)/includes 
+
+PRINT_INCLUDES  := includes
+
+NL_HEADER		:= $(INCLUDES)/get_next_line.h
+LIBFT_HEADER	:= $(INCLUDES)/libft.h
+FTPRINTF_HEADER	:= ft_printf.h
+
+LIBFT			:= libft.a
+
+CC				:= cc
+CFLAGS			:= -Wall -Wextra -Werror
+
+all: $(NAME)
+
+$(NAME): $(OBJECTS)
+	@echo building ft_printf library
+	ar rcs $(NAME) $(OBJECTS)
+
+$(OBJECTS): $(SOURCES) $(INCLUDES)
+	@echo compiling
+	@make -C $(LIBFT_DIR)
+	@mv $(LIBFT_DIR)/$(LIBFT) $(NAME)
+	$(CC) $(CFLAGS) -I$(INCLUDES) -I$(PRINT_INCLUDES) -c $(SOURCES)
+
+bonus: $(OBJECTS_BONUS)
+
+$(OBJECTS_BONUS): $(SOURCES_BONUS)
+	@echo compiling bonus
+	@make -C $(LIBFT_DIR)
+	@mv $(LIBFT_DIR)/$(LIBFT) $(NAME)
+	$(CC) $(CFLAGS) -I$(INCLUDES) -I$(BONUS_INCLUDES) -c $(SOURCES_BONUS)
+	@echo building ft_printf bonus library
+	ar rcs $(NAME) $(OBJECTS_BONUS)
+
+
+clean:
+	@rm -f $(OBJECTS) $(OBJECTS_BONUS)
+	@echo clean
+	@make -C $(LIBFT_DIR) clean
+
+fclean: clean
+	@rm -f $(NAME)
+	@echo fclean
+	@make -C $(LIBFT_DIR) fclean
+
+re: fclean all
