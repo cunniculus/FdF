@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static char	*add_sign_and_space(t_printf_info *info, char *str, int neg);
 

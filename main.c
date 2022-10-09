@@ -49,6 +49,31 @@ int	deal_key(int key, void *param)
 	return (0);
 }
 
+int	create_argb(int a, int r, int g, int b)
+{
+	return (a << 24 | r << 16 | g << 8 | b);
+}
+
+int	get_a(int argb)
+{
+	return ((argb >> 24) & 0xFF);
+}
+
+int	get_r(int argb)
+{
+	return ((argb >> 16) & 0xFF);
+}
+
+int	get_g(int argb)
+{
+	return ((argb >> 8) & 0xFF);
+}
+
+int	get_b(int argb)
+{
+	return (argb & 0xFF);
+}
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -217,7 +242,7 @@ int	main(void)
 	ft_printf("bits_per_pixel:\t%d\nline_legnth:\t%d\nendian:\t\t%d\n", img.bits_per_pixel, img.line_length, img.endian);
 	
 
-	full_color_screen(img, 0x00FF0000);
+	full_color_screen(img, create_argb(0, 0x7F, 0x8F, 0x3F));
 	centered_disc(img, 0x00FFFFFF, 100);
 	int p1[2] = {WIDTH / 2, HIGHT / 2};
 	int p2[2] = {WIDTH / 2 + 100, HIGHT / 2};

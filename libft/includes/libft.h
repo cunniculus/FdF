@@ -15,6 +15,7 @@
 
 # include <stdlib.h> // malloc(), free(), size_t
 # include <unistd.h> // write()
+# include "ft_printf.h"
 
 # ifndef TRUE
 #  define TRUE 1

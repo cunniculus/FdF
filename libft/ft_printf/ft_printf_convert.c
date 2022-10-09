@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static size_t	convert_nbr_int(t_printf_info *info, va_list args);
 static size_t	convert_pchars(t_printf_info *info, va_list args);

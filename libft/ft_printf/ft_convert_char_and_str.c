@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static size_t	print_in_order(t_printf_info *info, char c, char *pad);
 static char		*get_prec_and_width_s(t_printf_info *info, char **str);

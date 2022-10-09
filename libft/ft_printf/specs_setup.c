@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
 static void	width_setup(const char **format, t_printf_info *info);
 static void	precision_setup(const char **format, t_printf_info *info);

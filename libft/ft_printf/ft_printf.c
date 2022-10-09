@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"	
+#include "libft.h"	
 
 static void	parce_format(const char **format, va_list args, size_t *counter);
 static void	converter(const char **format, va_list args, size_t *counter);
