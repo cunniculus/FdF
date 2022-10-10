@@ -1,6 +1,10 @@
 NAME			:= program 
-SOURCE			:= read_file.c
-OBJ				:= read_file.o
+SOURCE			:= render.c\
+				   read_file.c\
+				   isometric_rotation.c\
+				   isometric_projection.c
+
+OBJ				:= $(SOURCE:.c=.o)
 
 LIBFT_DIR		:= libft
 LIBFT			:= /$(LIBFT_DIR)/libft.a
@@ -10,35 +14,25 @@ MLX_DIR			:= minilibx-linux
 MLX				:= $(MLX_DIR)/libmlx_Linux.a
 MLX_INCLUDES	:= $(MLX_DIR)
 
-INCLUDES 		:= -I/usr/local/include -I$(MLX_INCLUDES) -I$(LIBFT_INCLUDES)
+INCLUDES 		:= -I/usr/local/include -I$(MLX_INCLUDES) -I$(LIBFT_INCLUDES) -I.
 LIB_PATHS		:= -L/usr/local/lib -L$(MLX_DIR) -L$(LIBFT_DIR)
 LIBS			:= -lft -lmlx -lmlx_Linux -lXext -lX11 -lm 
-
-MLX_DIR_MAC		:= minilibx_macos
-LIBS_MAC		:= -lft -lmlx -lmlx -lm
-FRAMEWORKS		:= -framework OpenGL -framework AppKit
 
 CFLAGS			:= -Wall -Wextra -Werror -O3
 
 all: $(NAME) 
-
 	
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ $(LIB_PATHS) $(LIBS) -o $@
-#$(CC) $(CFLAGS) $(INCLUDES) $^ $(LIB_PATHS) $(LIBS) -o $@
 
 $(OBJ): $(SOURCE) | $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) $< -c -o $@
-#$(CC) $(CFLAGS) $(INCLUDES) $< $(LIB_PATHS) $(LIBS) -c -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(SOURCE) -c
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 run: all
 	./$(NAME)
-
-mac: $(OBJ) 
-	$(CC) $(CFLAGS) $^ $(LIB_PATHS) $(LIBS) $(FRAMEWORKS) -o $@
 
 debug:
 	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c -o $(OBJ)

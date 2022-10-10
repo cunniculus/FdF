@@ -3,37 +3,37 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <stdio.h>
+#include "fdf.h"
 
-int		get_row(int fd);
-int		get_row_size(char **row_str);
-int		*make_row_int(char **row_str);
-void	free_row(char **row);
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
 	int fd;
+	int	line_number;
 
 	if (argc != 2)
 		return (-1);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (-1);
-	get_row(fd);
+	line_number = 0;
+	get_row(fd, &line_number);
 	if (!close(fd))
 		return (-1);
 	return (0);
 }
 
-int	get_row(int fd)
+int	get_row(int fd, int *n)
 {
 	char	*line;
 	int		*row_int;
+	t_point	point;
 
 	line = get_next_line(fd);
 	if (!line)
 		return (0);
-	while (get_row(fd))
+	while (get_row(fd, n))
 	{
 		if (ft_strchr(line, '\n'))
 			ft_bzero(ft_strchr(line, '\n'), 1);
@@ -41,8 +41,17 @@ int	get_row(int fd)
 		free(line);
 
 		for(int i = 0; row_int[i] != INT_MIN; i++)
-		   printf("%3d", row_int[i]);
-		printf("\n");
+		{
+			// printf("\nNew row: %d\n", i);
+			// isometric transform
+			point.x = i; 
+			point.y = *n; 
+			point.z = row_int[i]; 
+			isometric_projection(&point);
+			my_mlx_test(point);
+		}
+		
+		(*n)++;
 	}
 	free(row_int);
 	return (1);

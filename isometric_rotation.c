@@ -1,26 +1,26 @@
 #include <math.h>
 #include "fdf.h"
 
-float	*isometric_rotation(float point[3], float rotated_point[3])
+t_point		isometric_rotation(t_point *point)
 
 {
 	t_irot_matrix	rotation;
 
 	init_rot_matrix(&rotation);
 
-	rotation_transformation(rotation, point, rotated_point);
+	rotation_transformation(rotation, point);
 
-	return (rotated_point);
+	return (*point);
 }
 
-float	*rotation_transformation(t_irot_matrix rotation, float point[3], float rotated_point[3])
+t_point	rotation_transformation(t_irot_matrix rotation, t_point *point)
 {
 
-	rotated_point[0] = dot_product(rotation.r1, point);
-	rotated_point[1] = dot_product(rotation.r2, point);
-	rotated_point[2] = dot_product(rotation.r3, point);
+	point->x = dot_product(rotation.r1, point);
+	point->y = dot_product(rotation.r2, point);
+	point->z = dot_product(rotation.r3, point);
 
-	return (rotated_point);
+	return (*point);
 }
 
 void	init_rot_matrix(t_irot_matrix *rotation)
@@ -38,17 +38,10 @@ void	init_rot_matrix(t_irot_matrix *rotation)
 	rotation->r3[2] = rotation->r3[0];
 }
 
-float	dot_product(float row[3], float point[3])
+float	dot_product(float row[3], t_point *point)
 {
-	int		i;
 	float	dp;
 
-	i = 0;
-	dp = 0;
-	while (i < 3)
-	{
-		dp += row[i] * point[i];
-		i++;
-	}
+	dp = row[0] * point->x + row[1] * point->y + row[2] * point->z;
 	return (dp);
 }
