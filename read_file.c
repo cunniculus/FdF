@@ -21,17 +21,8 @@ int main(int argc, char **argv)
 	row1 = get_row(fd);
 	if (!row1)
 		return (-1);
-	int i = 0;
-	while (row1[i] != INT_MIN)
-	{
-		ft_printf("%d", row1[i]);
-		if (!row1[i + 1])
-			ft_printf("  ", row1[i]);
-		i++;
-	}
-	ft_printf("\n", row1[i]);
-	while (get_next_line(fd))
-		;
+	// line just to read till end and  get no valgrind error
+	while (get_next_line(fd)) ;
 	free(row1);
 	return (0);
 }
@@ -50,16 +41,6 @@ int	*get_row(int fd)
 	row_int = make_row_int(ft_split(line, ' '));
 	free(line);
 	return (row_int);
-}
-
-int	get_row_size(char **row_str)
-{
-	int	size;
-
-	size = 0;
-	while (row_str[size])
-		size++;
-	return (size);
 }
 
 int	*make_row_int(char **row_str)
@@ -81,6 +62,16 @@ int	*make_row_int(char **row_str)
 	}
 	free_row(row_str);
 	return (row_int);
+}
+
+int	get_row_size(char **row_str)
+{
+	int	size;
+
+	size = 0;
+	while (row_str[size])
+		size++;
+	return (size);
 }
 
 void free_row(char **row)

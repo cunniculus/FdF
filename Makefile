@@ -1,6 +1,6 @@
 NAME			:= program 
-SOURCE			:= brabant3.c
-OBJ				:= brabant3.o
+SOURCE			:= main.c
+OBJ				:= main.o
 
 LIBFT_DIR		:= libft
 LIBFT			:= /$(LIBFT_DIR)/libft.a
