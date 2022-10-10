@@ -20,6 +20,8 @@ int main(int argc, char **argv)
 	if (fd == -1)
 		return (-1);
 	get_row(fd);
+	if (!close(fd))
+		return (-1);
 	return (0);
 }
 
@@ -27,7 +29,6 @@ int	get_row(int fd)
 {
 	char	*line;
 	int		*row_int;
-	//char	**row_str;
 
 	line = get_next_line(fd);
 	if (!line)
