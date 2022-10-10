@@ -1,6 +1,6 @@
 NAME			:= program 
-SOURCE			:= main.c
-OBJ				:= main.o
+SOURCE			:= read_file.c
+OBJ				:= read_file.o
 
 LIBFT_DIR		:= libft
 LIBFT			:= /$(LIBFT_DIR)/libft.a
@@ -13,6 +13,10 @@ MLX_INCLUDES	:= $(MLX_DIR)
 INCLUDES 		:= -I/usr/local/include -I$(MLX_INCLUDES) -I$(LIBFT_INCLUDES)
 LIB_PATHS		:= -L/usr/local/lib -L$(MLX_DIR) -L$(LIBFT_DIR)
 LIBS			:= -lft -lmlx -lmlx_Linux -lXext -lX11 -lm 
+
+MLX_DIR_MAC		:= minilibx_macos
+LIBS_MAC		:= -lft -lmlx -lmlx -lm
+FRAMEWORKS		:= -framework OpenGL -framework AppKit
 
 CFLAGS			:= -Wall -Wextra -Werror -O3
 
@@ -32,6 +36,9 @@ $(LIBFT):
 
 run: all
 	./$(NAME)
+
+mac: $(OBJ) 
+	$(CC) $(CFLAGS) $^ $(LIB_PATHS) $(LIBS) $(FRAMEWORKS) -o $@
 
 debug:
 	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c -o $(OBJ)
