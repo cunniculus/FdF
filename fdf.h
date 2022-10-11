@@ -7,6 +7,30 @@
 #include <math.h>
 #include "libft.h"
 
+#ifndef WIDTH
+# define WIDTH 900
+#endif
+
+#ifndef HIGHT
+# define HIGHT 900
+#endif
+
+#ifndef PADDING
+# define PADDING 100
+#endif
+
+#define MLX_ERROR -1
+
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
+
+
 // isometric rotation matrix struct
 typedef struct s_irot_matrix
 {
@@ -43,15 +67,6 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-/*
-typedef struct s_data
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-	t_img	img;
-	int		cur_img;
-}	t_data;
-*/
 typedef struct s_rect
 {
 	int	x;
@@ -87,6 +102,11 @@ t_list	**get_row(int fd, t_list **list);
 int		get_row_size(char **row_str);
 int		*make_row_int(char **row_str);
 void	free_row(char **row);
+
+// normalize
+t_list	**normalize(t_list **map);
+t_point	max_coord_values(t_list	*list);
+t_point	min_coord_values(t_list	*list);
 
 
 #endif

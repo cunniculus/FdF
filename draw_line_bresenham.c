@@ -2,24 +2,6 @@
 #include <math.h>
 #include "fdf.h"
 
-#ifndef WIDTH
-# define WIDTH 900
-#endif
-
-#ifndef HIGHT
-# define HIGHT 900
-#endif
-
-#define MLX_ERROR -1
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
-
 void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
 void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
 void plot_line(int x0, int y0, int x1, int y1, t_data img);
@@ -38,6 +20,8 @@ int	main(int argc, char **argv)
 	void	*mlx_win;
 	t_data	img;
 	t_list	*map;
+	t_list	*transformed_map;
+	t_point point1;
 
 	if (argc != 2)
 		return (-2);
@@ -55,6 +39,7 @@ int	main(int argc, char **argv)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 				&img.endian);
 
+	// get map and store data in a list; each node, one row of the map; first node has bottom row
 	map = NULL;
 	get_map(argv[1], &map);
 	if (!map)
@@ -63,8 +48,37 @@ int	main(int argc, char **argv)
 		return (-3);
 	}
 
+	// normalize values
 
-	plot_line(0,0, WIDTH, HIGHT, img); 
+	// transformation -> isometric projection
+	transformed_map = NULL;
+	t_list	*tmp = map;
+	int j = 0;
+	while (tmp)
+	{
+		int i = 0;
+		while (((int *)tmp->content)[i] != INT_MIN)
+		{
+			// transform point 1
+			point1.x = i;
+			point1.y = j;
+			point1.z = ((int *)tmp->content)[i];
+			isometric_projection(&point1);
+			// add point1 to list of transformed points
+			ft_lstadd_back(&transformed_map, ft_lstnew(&point1));
+
+
+			i++;
+		}
+		tmp = tmp->next;
+		j++;
+	}
+	
+	// normalize points
+	normalize(&transformed_map);
+
+
+	plot_line(0,500,WIDTH, 500, img); 
 
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
@@ -74,6 +88,7 @@ int	main(int argc, char **argv)
 	mlx_destroy_display(mlx);
 	free(mlx);
 	ft_lstclear(&map, free);
+	ft_lstclear(&transformed_map, free);
 	return (0);
 }
 

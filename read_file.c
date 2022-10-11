@@ -7,29 +7,30 @@
 
 #include <stdio.h>
 
+t_point	max_coord_values(t_list *list);
+t_point	min_coord_values(t_list *list);
 
 t_list **get_map(char *map_name, t_list **list)
 {
 	int fd;
+	t_list *tmp;
 
 	fd = open(map_name, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
 	list = get_row(fd, list);
 	if (!list)
-	{
-		printf("ta vazio essse trem\n");
-	}
-	for(t_list *tmp = *list; tmp; tmp = tmp->next) // mudar para while
+		return (NULL);
+	printf("ta vazio essse trem\n");
+	tmp = *list;
+	while (tmp)
 	{
 		// printf("\nNew row: %d\n", i);
-		// isometric transform
 		int j = 0;
 		for (int i = 0; ((int *) (tmp->content))[i] != INT_MIN; i++) // mudar para while
-		{
 			printf("%3d",((int *) (tmp->content))[i]);
-		}
 		j++;
+		tmp = tmp->next;
 		printf("\n");
 	}
 	if (!close(fd))
@@ -40,7 +41,6 @@ t_list **get_map(char *map_name, t_list **list)
 t_list **get_row(int fd, t_list **list)
 {
 	char	*line;
-	t_point	point;
 
 	while (TRUE)
 	{
@@ -53,24 +53,6 @@ t_list **get_row(int fd, t_list **list)
 
 		free(line);
 	}
-
-
-		for(t_list *tmp = *list; tmp; tmp = tmp->next) // mudar para while
-		{
-			// printf("\nNew row: %d\n", i);
-			// isometric transform
-			int j = 0;
-			for (int i = 0; ((int *) (tmp->content))[i] != INT_MIN; i++) // mudar para while
-			{
-				printf("%3d",((int *) (tmp->content))[i]);
-				point.x = i; 
-				point.y = j; 
-				point.z = ((int *)tmp->content)[i]; 
-				isometric_projection(&point);
-			}
-			j++;
-			printf("\n");
-		}
 
 	return (list);
 }
@@ -117,4 +99,60 @@ void free_row(char **row)
 		i++;
 	}
 	free(row);
+}
+
+
+t_list **normalize(t_list **map)
+{
+	t_point	min;
+	t_point	max;
+	t_list *tmp;
+
+	min = min_coord_values(*map);
+	max = max_coord_values(*map);
+	tmp = *map;
+	while (tmp)
+	{
+		((t_point *)tmp->content)->x = PADDING + (((((t_point *)tmp->content)->x - min.x) * \
+					(WIDTH - 2 * PADDING)) / (max.x - min.x));
+		((t_point *)tmp->content)->y = PADDING + (((((t_point *)tmp->content)->y - min.y) * \
+					(WIDTH - 2 * PADDING)) / (max.y - min.y));
+		tmp = tmp->next;
+	}
+	return (map);
+}
+
+t_point	max_coord_values(t_list *list)
+{
+	t_point	point;
+
+	point.x = (float) INT_MIN;
+	point.y = (float) INT_MIN;
+	while (list)
+	{
+		if (((t_point *)list->content)->x > point.x)
+			point.x = ((t_point *)list->content)->x;
+		if (((t_point *)list->content)->y > point.y)
+			point.y = ((t_point *)list->content)->y;
+		list = list->next;
+	}
+	point.z = 0;
+	return (point);
+}
+t_point	min_coord_values(t_list *list)
+{
+	t_point	point;
+
+	point.x = (float) INT_MAX;
+	point.y = (float) INT_MAX;
+	while (list)
+	{
+		if (((t_point *)list->content)->x < point.x)
+			point.x = ((t_point *)list->content)->x;
+		if (((t_point *)list->content)->y < point.y)
+			point.y = ((t_point *)list->content)->y;
+		list = list->next;
+	}
+	point.z = 0;
+	return (point);
 }
