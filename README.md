@@ -6,7 +6,8 @@ I am using a a small library, called MiniLibX, designed by 42 School in Paris in
 
 The main idea is to read a file with 3D coordinates and represent a model of the surface in ISOMETRIC PROJECTION. 
 
-I shall try to add some cool transformations, like zoom in ou ou, translate, rotate, other projections, anad hopefully more.
+I shall try to add some cool transformations, like zoom in ou out, translate, rotate, another couple of projections, and hopefully more.
 
-The most challenging project so far. And certainly the most fun.
+Definitely the most challenging project so far. And certainly the most fun!!
+
 It is a work in progress... ;)
