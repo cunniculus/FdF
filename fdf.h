@@ -82,13 +82,11 @@ void	print_point(t_point *point);
 //t_point	projection_transformation(t_proj_matrix projection, t_point *point);
 
 // read_file
-int		get_row(int fd, t_list **list);
+t_list	**get_map(char *map_name, t_list **list);
+t_list	**get_row(int fd, t_list **list);
 int		get_row_size(char **row_str);
 int		*make_row_int(char **row_str);
 void	free_row(char **row);
 
-// render file
-void	img_pix_put(t_img *img, int x, int y, int color);
-int	my_mlx_test(void);
 
 #endif

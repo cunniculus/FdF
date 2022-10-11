@@ -8,24 +8,36 @@
 #include <stdio.h>
 
 
-int main(int argc, char **argv)
+t_list **get_map(char *map_name, t_list **list)
 {
 	int fd;
-	t_list *list;
 
-	if (argc != 2)
-		return (-1);
-	fd = open(argv[1], O_RDONLY);
+	fd = open(map_name, O_RDONLY);
 	if (fd == -1)
-		return (-1);
-	list = NULL;
-	get_row(fd, &list);
+		return (NULL);
+	list = get_row(fd, list);
+	if (!list)
+	{
+		printf("ta vazio essse trem\n");
+	}
+	for(t_list *tmp = *list; tmp; tmp = tmp->next) // mudar para while
+	{
+		// printf("\nNew row: %d\n", i);
+		// isometric transform
+		int j = 0;
+		for (int i = 0; ((int *) (tmp->content))[i] != INT_MIN; i++) // mudar para while
+		{
+			printf("%3d",((int *) (tmp->content))[i]);
+		}
+		j++;
+		printf("\n");
+	}
 	if (!close(fd))
-		return (-1);
-	return (0);
+		return (NULL);
+	return (list);
 }
 
-int	get_row(int fd, t_list **list)
+t_list **get_row(int fd, t_list **list)
 {
 	char	*line;
 	t_point	point;
@@ -60,8 +72,7 @@ int	get_row(int fd, t_list **list)
 			printf("\n");
 		}
 
-	ft_lstclear(list, free);
-	return (1);
+	return (list);
 }
 
 int	*make_row_int(char **row_str)

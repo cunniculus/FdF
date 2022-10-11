@@ -32,11 +32,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	void	*mlx;
 	void	*mlx_win;
 	t_data	img;
+	t_list	*map;
+
+	if (argc != 2)
+		return (-2);
 
 	mlx = mlx_init();
 	if (mlx == NULL)
@@ -51,6 +55,15 @@ int	main(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 				&img.endian);
 
+	map = NULL;
+	get_map(argv[1], &map);
+	if (!map)
+	{
+		printf("ta vazio esse trem\n");
+		return (-3);
+	}
+
+
 	plot_line(0,0, WIDTH, HIGHT, img); 
 
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
@@ -60,6 +73,8 @@ int	main(void)
 	mlx_destroy_image(mlx, img.img);
 	mlx_destroy_display(mlx);
 	free(mlx);
+	ft_lstclear(&map, free);
+	return (0);
 }
 
 

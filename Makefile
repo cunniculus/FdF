@@ -1,7 +1,8 @@
 NAME			:= program 
 SOURCE			:= isometric_projection.c\
 				   isometric_rotation.c\
-				   read_file.c
+				   read_file.c\
+				   draw_line_bresenham.c
 
 OBJ				:= $(SOURCE:.c=.o)
 
