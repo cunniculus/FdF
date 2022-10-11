@@ -64,10 +64,9 @@ int	main(int argc, char **argv)
 			point1.y = j;
 			point1.z = ((int *)tmp->content)[i];
 			isometric_projection(&point1);
+
 			// add point1 to list of transformed points
 			ft_lstadd_back(&transformed_map, ft_lstnew(&point1));
-
-
 			i++;
 		}
 		tmp = tmp->next;
@@ -78,7 +77,13 @@ int	main(int argc, char **argv)
 	normalize(&transformed_map);
 
 
-	plot_line(0,500,WIDTH, 500, img); 
+	tmp = transformed_map;
+	while(tmp->next)
+	{
+		plot_line(round(((t_point *)tmp->content)->x), round(((t_point *)tmp->content)->y),\
+		round(((t_point *)tmp->next->content)->x),round(((t_point *)tmp->next->content)->x), img);
+		tmp = tmp->next;
+	}
 
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
