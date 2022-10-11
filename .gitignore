@@ -1,2 +1,4 @@
 program
 a.out
+*.o
+*.swp
