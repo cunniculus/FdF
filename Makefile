@@ -1,8 +1,7 @@
 NAME			:= program 
-SOURCE			:= render.c\
-				   read_file.c\
+SOURCE			:= isometric_projection.c\
 				   isometric_rotation.c\
-				   isometric_projection.c
+				   read_file.c
 
 OBJ				:= $(SOURCE:.c=.o)
 
@@ -35,7 +34,7 @@ run: all
 	./$(NAME)
 
 debug:
-	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c -o $(OBJ)
+	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c
 	$(CC) $(CFLAGS) -g3 $(OBJ) $(LIB_PATHS) $(LIBS) -o $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 

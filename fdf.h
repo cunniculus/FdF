@@ -5,6 +5,7 @@
 #include <string.h>	// strerror()
 #include <stdlib.h> // exit()
 #include <math.h>
+#include "libft.h"
 
 // isometric rotation matrix struct
 typedef struct s_irot_matrix
@@ -42,6 +43,7 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
+/*
 typedef struct s_data
 {
 	void	*mlx_ptr;
@@ -49,7 +51,7 @@ typedef struct s_data
 	t_img	img;
 	int		cur_img;
 }	t_data;
-
+*/
 typedef struct s_rect
 {
 	int	x;
@@ -58,6 +60,12 @@ typedef struct s_rect
 	int height;
 	int color;
 }	t_rect;
+
+typedef struct s_row_list
+{
+	int					*row;
+	struct s_row_list	*next;
+}	t_row_list;
 
 void	plot (int x, int y);
 
@@ -74,7 +82,7 @@ void	print_point(t_point *point);
 //t_point	projection_transformation(t_proj_matrix projection, t_point *point);
 
 // read_file
-int		get_row(int fd, int *n);
+int		get_row(int fd, t_list **list);
 int		get_row_size(char **row_str);
 int		*make_row_int(char **row_str);
 void	free_row(char **row);

@@ -7,53 +7,60 @@
 
 #include <stdio.h>
 
+
 int main(int argc, char **argv)
 {
 	int fd;
-	int	line_number;
+	t_list *list;
 
 	if (argc != 2)
 		return (-1);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (-1);
-	line_number = 0;
-	get_row(fd, &line_number);
+	list = NULL;
+	get_row(fd, &list);
 	if (!close(fd))
 		return (-1);
 	return (0);
 }
 
-int	get_row(int fd, int *n)
+int	get_row(int fd, t_list **list)
 {
 	char	*line;
-	int		*row_int;
 	t_point	point;
 
-	line = get_next_line(fd);
-	if (!line)
-		return (0);
-	while (get_row(fd, n))
+	while (TRUE)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
 		if (ft_strchr(line, '\n'))
 			ft_bzero(ft_strchr(line, '\n'), 1);
-		row_int = make_row_int(ft_split(line, ' '));
-		free(line);
+		ft_lstadd_front(list, ft_lstnew(make_row_int(ft_split(line, ' '))));
 
-		for(int i = 0; row_int[i] != INT_MIN; i++)
+		free(line);
+	}
+
+
+		for(t_list *tmp = *list; tmp; tmp = tmp->next) // mudar para while
 		{
 			// printf("\nNew row: %d\n", i);
 			// isometric transform
-			point.x = i; 
-			point.y = *n; 
-			point.z = row_int[i]; 
-			isometric_projection(&point);
-			my_mlx_test(point);
+			int j = 0;
+			for (int i = 0; ((int *) (tmp->content))[i] != INT_MIN; i++) // mudar para while
+			{
+				printf("%3d",((int *) (tmp->content))[i]);
+				point.x = i; 
+				point.y = j; 
+				point.z = ((int *)tmp->content)[i]; 
+				isometric_projection(&point);
+			}
+			j++;
+			printf("\n");
 		}
-		
-		(*n)++;
-	}
-	free(row_int);
+
+	ft_lstclear(list, free);
 	return (1);
 }
 
