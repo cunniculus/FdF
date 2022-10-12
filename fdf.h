@@ -34,6 +34,7 @@ typedef struct	s_window
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
+	void	*img;
 }	t_window;
 	
 
@@ -71,6 +72,16 @@ typedef struct	s_rounded_point
 	int		color;
 }	t_rounded_point;
 
+enum
+{
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
 
 typedef struct s_row_list
 {

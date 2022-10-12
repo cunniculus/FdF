@@ -14,6 +14,14 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
+int	redraw_expose(t_window *vars)
+{
+	ft_printf("redraw ");
+	
+	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img, 0, 0);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_window	mlx;
@@ -130,6 +138,7 @@ int	main(int argc, char **argv)
 	
 
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr, img.img, 0, 0);
+	mlx_expose_hook(mlx.win_ptr, redraw_expose, &mlx);
 	mlx_loop(mlx.mlx_ptr);
 
 	/* we will exit the loop if there's no window left, and execute this code */
@@ -156,6 +165,7 @@ int	setup_mlx(t_window *mlx, t_data *img)
 	img->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HIGHT);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,\
 			&img->line_length, &img->endian);
+	mlx->img = img->img;
 	return (42);
 }
 // bresenham
