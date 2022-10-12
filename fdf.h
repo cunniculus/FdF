@@ -90,8 +90,9 @@ typedef struct s_row_list
 }	t_row_list;
 
 int	setup_mlx(t_window *mlx, t_data *img);
+/*
 void	plot (int x, int y);
-
+*/
 // isometric_rotation
 t_point	isometric_rotation(t_point *point);
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
