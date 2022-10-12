@@ -5,7 +5,7 @@
 void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
 void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
 void plot_line(int x0, int y0, int x1, int y1, t_data img);
-t_list	*generate_points(t_list *map);
+t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *));
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -45,14 +45,11 @@ int	main(int argc, char **argv)
 		return (-3);
 	}
 
-	// normalize values
-
 	// transformation -> isometric projection
-	transformed_map = generate_points(map);
+	transformed_map = generate_points(map, isometric_projection);
 
 	for (t_list *tmp1 = transformed_map; tmp1; tmp1 = tmp1->next)
 		print_point((t_point *)tmp1->content);
-
 	
 	// normalize points
 	normalize(&transformed_map);
@@ -227,7 +224,7 @@ void plot_line_high(int x0, int y0, int x1, int y1, t_data img)
 	}
 }
 
-t_list	*generate_points(t_list *map)
+t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *))
 {
 	t_list	*transformed_map;
 	t_point	*point;
@@ -245,7 +242,7 @@ t_list	*generate_points(t_list *map)
 			point->x = i;
 			point->y = j;
 			point->z = ((int *)map->content)[i++];
-			isometric_projection(point);
+			transformation(point);
 			ft_lstadd_back(&transformed_map, ft_lstnew(point));
 		}
 		map = map->next;
