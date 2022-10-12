@@ -6,6 +6,7 @@
 #include <stdlib.h> // exit()
 #include <math.h>
 #include "libft.h"
+#include <mlx.h>
 
 #ifndef WIDTH
 # define WIDTH 900
@@ -113,6 +114,16 @@ t_list	**get_row(int fd, t_list **list);
 int		get_row_size(char **row_str);
 int		*make_row_int(char **row_str);
 void	free_row(char **row);
+
+// draw_line
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int	redraw_expose(t_window *vars);
+
+
+//bresenham.c
+void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
+void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
+void plot_line(int x0, int y0, int x1, int y1, t_data img);
 
 // normalize
 t_list	**normalize(t_list **map);

@@ -2,6 +2,7 @@ NAME			:= program
 SOURCE			:= isometric_projection.c\
 				   isometric_rotation.c\
 				   read_file.c\
+				   bresenham.c\
 				   draw_line_bresenham.c
 
 OBJ				:= $(SOURCE:.c=.o)
@@ -37,7 +38,7 @@ run: all
 debug:
 	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c
 	$(CC) $(CFLAGS) -g3 $(OBJ) $(LIB_PATHS) $(LIBS) -o $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) test_maps/42.fdf
 
 man:
 	man /usr/local/man/man3/*
