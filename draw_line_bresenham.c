@@ -1,11 +1,7 @@
 #include "fdf.h"
 
-void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
-void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
-void plot_line(int x0, int y0, int x1, int y1, t_data img);
 t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *));
 t_list	*generate_rounded_points(t_list	*point_list);
-void	plot(t_data img, t_list *map, t_list *transformed_map);
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -174,11 +170,13 @@ t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *))
 t_list	*generate_rounded_points(t_list	*point_list)
 {
 	t_list			*rounded_list;
+	t_list			*tmp;
 	t_rounded_point	*point;
 	int				j;
 
 	rounded_list = NULL;
 	j = 0;
+	tmp = point_list;
 	while (point_list)
 	{
 		point = malloc(sizeof (t_rounded_point));
@@ -189,6 +187,6 @@ t_list	*generate_rounded_points(t_list	*point_list)
 		point_list = point_list->next;
 		j++;
 	}
-	ft_lstclear(&point_list, free);
+	ft_lstclear(&tmp, free);
 	return (rounded_list);
 }

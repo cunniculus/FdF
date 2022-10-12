@@ -118,6 +118,7 @@ void	free_row(char **row);
 // draw_line
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	redraw_expose(t_window *vars);
+void	plot(t_data img, t_list *map, t_list *transformed_map);
 
 
 //bresenham.c
