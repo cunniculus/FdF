@@ -32,7 +32,7 @@ $(LIBFT):
 	make -C $(LIBFT_DIR)
 
 run: all
-	./$(NAME)
+	./$(NAME) test_maps/42.fdf
 
 debug:
 	$(CC) $(CFLAGS) -g3 $(INCLUDES) $(SOURCE) -c

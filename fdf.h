@@ -21,7 +21,8 @@
 
 #define MLX_ERROR -1
 
-typedef struct	s_data {
+typedef struct	s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -29,15 +30,21 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
+typedef struct	s_window
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_window;
+	
 
 
 // isometric rotation matrix struct
-typedef struct s_irot_matrix
+typedef struct s_matrix
 {
 	float	r1[3];
 	float	r2[3];
 	float	r3[3];
-}	t_irot_matrix;
+}	t_matrix;
 
 // projection matrix struct
 typedef struct	s_proj_matrix
@@ -56,25 +63,14 @@ typedef struct	s_point
 	int		color;
 }	t_point;
 
-
-// my own minilibx structs
-typedef struct s_img
-{
-	void	*mlx_img;
-	char	*addr;
-	int		bpp; /* bits per pixel */
-	int		line_len;
-	int		endian;
-}	t_img;
-
-typedef struct s_rect
+typedef struct	s_rounded_point
 {
 	int	x;
 	int	y;
-	int width;
-	int height;
-	int color;
-}	t_rect;
+	int	z;
+	int		color;
+}	t_rounded_point;
+
 
 typedef struct s_row_list
 {
@@ -82,13 +78,16 @@ typedef struct s_row_list
 	struct s_row_list	*next;
 }	t_row_list;
 
+int	setup_mlx(t_window *mlx, t_data *img);
 void	plot (int x, int y);
 
 // isometric_rotation
 t_point	isometric_rotation(t_point *point);
-void	init_rot_matrix(t_irot_matrix *rotation);
+void	init_rot_matrix_x(t_matrix *rotation, float degrees);
+void	init_rot_matrix_y(t_matrix *rotation, float degrees);
+void	init_rot_matrix_z(t_matrix *rotation, float degrees);
 float	dot_product(float row[3], t_point *point);
-t_point	rotation_transformation(t_irot_matrix rotation, t_point *point);
+t_point	rotation_transformation(t_matrix rotation, t_point *point);
 
 // isometric_projection
 t_point	isometric_projection(t_point *point);

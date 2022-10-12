@@ -16,29 +16,18 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 int	main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*mlx_win;
-	t_data	img;
-	t_list	*map;
-	t_list	*transformed_map;
-	t_point point1;
+	t_window	mlx;
+	t_data		img;
+	t_list		*map;
+	t_list		*transformed_map;
+	t_point 	*point;
+	t_list		*tmp;
+	int			i;
 
 	if (argc != 2)
 		return (-2);
-
-	mlx = mlx_init();
-	if (mlx == NULL)
-		return (MLX_ERROR);
-	mlx_win = mlx_new_window(mlx, WIDTH, HIGHT, "Hello world!");
-	if (mlx_win == NULL)
-	{
-		free(mlx_win);
-		return (MLX_ERROR);
-	}
-	img.img = mlx_new_image(mlx, WIDTH, HIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-				&img.endian);
-
+	if (!setup_mlx(&mlx, &img))
+		return (-3);
 	// get map and store data in a list; each node, one row of the map; first node has bottom row
 	map = NULL;
 	get_map(argv[1], &map);
@@ -52,52 +41,123 @@ int	main(int argc, char **argv)
 
 	// transformation -> isometric projection
 	transformed_map = NULL;
-	t_list	*tmp = map;
+	tmp = map;
 	int j = 0;
 	while (tmp)
 	{
-		int i = 0;
+		i = 0;
 		while (((int *)tmp->content)[i] != INT_MIN)
 		{
 			// transform point 1
-			point1.x = i;
-			point1.y = j;
-			point1.z = ((int *)tmp->content)[i];
-			isometric_projection(&point1);
+			point = malloc(sizeof (t_point));
+			point->x = i;
+			point->y = j;
+			point->z = ((int *)tmp->content)[i];
+			isometric_projection(point);
 
 			// add point1 to list of transformed points
-			ft_lstadd_back(&transformed_map, ft_lstnew(&point1));
+			ft_lstadd_back(&transformed_map, ft_lstnew(point));
+
 			i++;
 		}
 		tmp = tmp->next;
 		j++;
 	}
+
+	for (t_list *tmp1 = transformed_map; tmp1; tmp1 = tmp1->next)
+		print_point((t_point *)tmp1->content);
+
 	
 	// normalize points
 	normalize(&transformed_map);
+	for (t_list *tmp1 = transformed_map; tmp1; tmp1 = tmp1->next)
+		print_point((t_point *)tmp1->content);
 
 
+	t_rounded_point point1, point2;
+	int total = 0;
+	tmp = map;
+	int x = 0;
+	while (tmp)
+	{
+		x = 0;
+		while (((int *)tmp->content)[x] != INT_MIN)
+			x++;
+		total += x;
+		tmp = tmp->next;
+	}
+	i = 1;
 	tmp = transformed_map;
 	while(tmp->next)
 	{
-		plot_line(round(((t_point *)tmp->content)->x), round(((t_point *)tmp->content)->y),\
-		round(((t_point *)tmp->next->content)->x),round(((t_point *)tmp->next->content)->x), img);
+		point1.x = round(((t_point *)tmp->content)->x);
+		point1.y = round(((t_point *)tmp->content)->y);
+		point2.x = round(((t_point *)tmp->next->content)->x);
+		point2.y = round(((t_point *)tmp->next->content)->y);
+		if (i != x)
+		{
+			plot_line(point1.x, point1.y, point2.x, point2.y, img);
+			i++;
+		}
+		else 
+			i = 1;
 		tmp = tmp->next;
 	}
+	tmp = transformed_map;
+	i = 0;
+	while(tmp->next)
+	{
+		point1.x = round(((t_point *)tmp->content)->x);
+		point1.y = round(((t_point *)tmp->content)->y);
+		int j = i;
+		while (x + i < total && j < x + i)
+		{
+			tmp = tmp->next;
+			j++;
+		}
+		point2.x = round(((t_point *)tmp->content)->x);
+		point2.y = round(((t_point *)tmp->content)->y);
+		plot_line(point1.x, point1.y, point2.x, point2.y, img);
+		i++;
+		j = 0;
+		tmp = transformed_map;
+		while (j < i)
+		{
+			tmp = tmp->next;
+			j++;
+		}
+	}
+	
 
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
+	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr, img.img, 0, 0);
+	mlx_loop(mlx.mlx_ptr);
 
 	/* we will exit the loop if there's no window left, and execute this code */
-	mlx_destroy_image(mlx, img.img);
-	mlx_destroy_display(mlx);
-	free(mlx);
+	mlx_destroy_image(mlx.mlx_ptr, img.img);
+	mlx_destroy_display(mlx.mlx_ptr);
+	free(mlx.mlx_ptr);
 	ft_lstclear(&map, free);
 	ft_lstclear(&transformed_map, free);
 	return (0);
 }
 
+int	setup_mlx(t_window *mlx, t_data *img)
+{
 
+	mlx->mlx_ptr = mlx_init();
+	if (!mlx->mlx_ptr)
+		return (0);
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HIGHT, "Hello world!");
+	if (!mlx->win_ptr)
+	{
+		free(mlx->win_ptr);
+		return (0);
+	}
+	img->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HIGHT);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,\
+			&img->line_length, &img->endian);
+	return (42);
+}
 // bresenham
 //
 void plot_line(int x0, int y0, int x1, int y1, t_data img)

@@ -7,12 +7,18 @@ t_point	isometric_projection(t_point *point)
 	//t_proj_matrix	proj_matrix;
 
 	isometric_rotation(point);
+
 	point->z = 0;
+	/*
+	t_matrix	rotation;
+	init_rot_matrix_z(&rotation, 45);
+	rotation_transformation(rotation, point);
+	*/
 
 	//init_proj_matrix(&proj_matrix);
 
 	//projection_transformation(proj_matrix, point);
-	print_point(point);
+	//print_point(point);
 
 	return (*point);
 
