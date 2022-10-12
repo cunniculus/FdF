@@ -5,6 +5,7 @@
 void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
 void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
 void plot_line(int x0, int y0, int x1, int y1, t_data img);
+t_list	*generate_points(t_list *map);
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -28,7 +29,6 @@ int	main(int argc, char **argv)
 	t_data		img;
 	t_list		*map;
 	t_list		*transformed_map;
-	t_point 	*point;
 	t_list		*tmp;
 	int			i;
 
@@ -48,29 +48,7 @@ int	main(int argc, char **argv)
 	// normalize values
 
 	// transformation -> isometric projection
-	transformed_map = NULL;
-	tmp = map;
-	int j = 0;
-	while (tmp)
-	{
-		i = 0;
-		while (((int *)tmp->content)[i] != INT_MIN)
-		{
-			// transform point 1
-			point = malloc(sizeof (t_point));
-			point->x = i;
-			point->y = j;
-			point->z = ((int *)tmp->content)[i];
-			isometric_projection(point);
-
-			// add point1 to list of transformed points
-			ft_lstadd_back(&transformed_map, ft_lstnew(point));
-
-			i++;
-		}
-		tmp = tmp->next;
-		j++;
-	}
+	transformed_map = generate_points(map);
 
 	for (t_list *tmp1 = transformed_map; tmp1; tmp1 = tmp1->next)
 		print_point((t_point *)tmp1->content);
@@ -94,6 +72,7 @@ int	main(int argc, char **argv)
 		total += x;
 		tmp = tmp->next;
 	}
+
 	i = 1;
 	tmp = transformed_map;
 	while(tmp->next)
@@ -111,6 +90,7 @@ int	main(int argc, char **argv)
 			i = 1;
 		tmp = tmp->next;
 	}
+
 	tmp = transformed_map;
 	i = 0;
 	while(tmp->next)
@@ -247,3 +227,29 @@ void plot_line_high(int x0, int y0, int x1, int y1, t_data img)
 	}
 }
 
+t_list	*generate_points(t_list *map)
+{
+	t_list	*transformed_map;
+	t_point	*point;
+	int		i;
+	int		j;
+
+	transformed_map = NULL;
+	j = 0;
+	while (map)
+	{
+		i = 0;
+		while (((int *)map->content)[i] != INT_MIN)
+		{
+			point = malloc(sizeof (t_point));
+			point->x = i;
+			point->y = j;
+			point->z = ((int *)map->content)[i++];
+			isometric_projection(point);
+			ft_lstadd_back(&transformed_map, ft_lstnew(point));
+		}
+		map = map->next;
+		j++;
+	}
+	return (transformed_map);
+}
