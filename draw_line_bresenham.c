@@ -2,6 +2,8 @@
 
 t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *));
 t_list	*generate_rounded_points(t_list	*point_list);
+t_list	*generate_image(t_list *map, t_data img,\
+		t_point(*transformation)(t_point *));
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -24,7 +26,6 @@ int	main(int argc, char **argv)
 	t_window	mlx;
 	t_data		img;
 	t_list		*map;
-	t_list		*transformed_map;
 
 	if (argc != 2)
 		return (-2);
@@ -35,12 +36,7 @@ int	main(int argc, char **argv)
 	get_map(argv[1], &map);
 	if (!map)
 		return (-3);
-
-	transformed_map = generate_points(map, isometric_projection);
-	normalize(&transformed_map);
-	transformed_map = generate_rounded_points(transformed_map);
-	plot(img, map, transformed_map);	
-
+	generate_image(map, img, isometric_projection);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr, img.img, 0, 0);
 	mlx_expose_hook(mlx.win_ptr, redraw_expose, &mlx);
 	mlx_loop(mlx.mlx_ptr);
@@ -50,9 +46,21 @@ int	main(int argc, char **argv)
 	mlx_destroy_display(mlx.mlx_ptr);
 	free(mlx.mlx_ptr);
 	ft_lstclear(&map, free);
-	ft_lstclear(&transformed_map, free);
 	return (0);
 }
+
+t_list	*generate_image(t_list *map, t_data img, t_point(*transformation)(t_point *))
+{
+	t_list	*transformed_map;
+
+	transformed_map = generate_points(map, transformation);
+	normalize(&transformed_map);
+	transformed_map = generate_rounded_points(transformed_map);
+	plot(img, map, transformed_map);	
+	ft_lstclear(&transformed_map, free);
+	return (transformed_map);
+}
+
 
 int	setup_mlx(t_window *mlx, t_data *img)
 {
