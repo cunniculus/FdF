@@ -2,15 +2,21 @@
 
 t_list  *scale(t_list *map, t_boundaries bound)
 {
-    t_matrix    scale;
 	t_list		*tmp;
+	t_point		*point;
 
-    init_scale_matrix(&scale, bound.max_x - bound.min_x,\
-						bound.max_y - bound.min_y);
-	tmp = map;
+	if (bound.max_x)
+	{
+		;
+	}
+	tmp = NULL;
 	while (map)	
 	{
-		transformation(scale, map->content);
+		point = malloc(sizeof (t_point));
+		point->x = ((t_point *)map->content)->x * SCALE;
+		point->y = ((t_point *)map->content)->y * SCALE;
+		point->z = ((t_point *)map->content)->z * SCALE;
+		ft_lstadd_back(&tmp, ft_lstnew(point));
 		map = map->next;
 	}	
 	return (tmp);

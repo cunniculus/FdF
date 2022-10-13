@@ -1,18 +1,25 @@
 #include <math.h>
 #include "fdf.h"
 
-t_list	*isometric_rotation(t_list	*map)
+t_point	*isometric_rotation(t_point	*point)
 {
 	t_matrix	rotation;
+
+	init_rot_matrix_z(&rotation, ISOMETRIC_Z_ANGLE);
+	transformation(rotation, point);
+	init_rot_matrix_x(&rotation, ISOMETRIC_X_ANGLE);
+	transformation(rotation, point);
+	return (point);
+}
+
+t_list	*step_rotation(t_list *map, t_point *(*step_rot)(t_point *))
+{
 	t_list	*points;
 
 	points = map;
 	while (points)
 	{
-		init_rot_matrix_z(&rotation, 45);
-		transformation(rotation, points->content);
-		init_rot_matrix_x(&rotation, 35.264);
-		transformation(rotation, points->content);
+		step_rot(points->content);
 		points = points->next;
 	}
 	return (map);
@@ -22,13 +29,8 @@ t_point		*rotation_x_right(t_point *point)
 {
 	t_matrix	rotation;
 	
-	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_x(&rotation, 20);
-	//printf("point before trnasform: ");
-	//print_point(point);
+	init_rot_matrix_x(&rotation, 2);
 	transformation(rotation, point);
-	//printf("point AFTER trnasform: ");
-	//print_point(point);
 	return (point);
 }
 
@@ -36,17 +38,8 @@ t_point		*rotation_x_left(t_point *point)
 {
 	t_matrix	rotation;
 	
-	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_x(&rotation, -20);
-	printf("point before trnasform: ");
-	print_point(point);
-	printf("%4.1f %4.1f %4.1f\n %4.1f %4.1f %4.1f\n %4.1f %4.1f %4.1f\n",\
-	rotation.r1[0], rotation.r2[1], rotation.r3[2],\
-	 rotation.r1[0], rotation.r2[1], rotation.r3[2],\
-	 rotation.r1[0], rotation.r2[1], rotation.r3[2]);
+	init_rot_matrix_x(&rotation, -2);
 	transformation(rotation, point);
-	printf("point AFTER trnasform: ");
-	print_point(point);
 	return (point);
 }
 t_point		*rotation_y_right(t_point *point)
@@ -54,7 +47,7 @@ t_point		*rotation_y_right(t_point *point)
 	t_matrix	rotation;
 	
 	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_y(&rotation, 20);
+	init_rot_matrix_y(&rotation, 2);
 	transformation(rotation, point);
 	return (point);
 }
@@ -64,7 +57,7 @@ t_point		*rotation_y_left(t_point *point)
 	t_matrix	rotation;
 	
 	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_y(&rotation, -20);
+	init_rot_matrix_y(&rotation, -2);
 	transformation(rotation, point);
 	return (point);
 }

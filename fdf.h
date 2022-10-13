@@ -9,6 +9,21 @@
 #include <mlx.h>
 
 
+#ifndef SCALE 
+# define SCALE 30
+#endif
+
+#ifndef ISOMETRIC_X_ANGLE 
+# define ISOMETRIC_X_ANGLE 35.264
+#endif
+
+#ifndef ISOMETRIC_Y_ANGLE 
+# define ISOMETRIC_Y_ANGLE 0
+#endif
+
+#ifndef ISOMETRIC_Z_ANGLE 
+# define ISOMETRIC_Z_ANGLE 45
+#endif
 
 #ifndef WIDTH
 # define WIDTH 900
@@ -23,6 +38,13 @@
 #endif
 
 #define MLX_ERROR -1
+
+typedef struct s_rotated_angle
+{
+	int	x;
+	int y;
+	int z;
+}	t_rotated_angle;
 
 typedef struct s_boundaries
 {
@@ -49,7 +71,6 @@ typedef struct	s_data
 }	t_data;
 	
 
-
 // isometric rotation matrix struct
 typedef struct s_matrix
 {
@@ -57,14 +78,6 @@ typedef struct s_matrix
 	float	r2[3];
 	float	r3[3];
 }	t_matrix;
-
-// projection matrix struct
-typedef struct	s_proj_matrix
-{
-	float	p1[3];
-	float	p2[3];
-	float	p3[3];
-}	t_proj_matrix;
 
 // transformed point
 typedef struct	s_point
@@ -84,7 +97,6 @@ typedef struct	s_rounded_point
 }	t_rounded_point;
 
 
-
 enum
 {
 	ON_KEYDOWN = 2,
@@ -101,17 +113,19 @@ enum
 	D_ARROW = 65364
 };
 
+/*
 typedef struct s_row_list
 {
 	int					*row;
 	struct s_row_list	*next;
 }	t_row_list;
-
+*/
 int	setup_mlx(t_data *mlx);
 
 float	dot_product(float row[3], t_point *point);
 // rotations 
-t_list	*isometric_rotation(t_list *map);
+t_point	*isometric_rotation(t_point *point);
+t_list	*step_rotation(t_list *map, t_point *(*step_rot)(t_point *));
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
 void	init_rot_matrix_y(t_matrix *rotation, float degrees);
 void	init_rot_matrix_z(t_matrix *rotation, float degrees);
