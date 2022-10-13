@@ -13,8 +13,12 @@
 # define SCALE 20
 #endif
 
-#ifndef TRANSLATION 
-# define TRANSLATION 300
+#ifndef TRANSLATION_X 
+# define TRANSLATION_X 300
+#endif
+
+#ifndef TRANSLATION_Y 
+# define TRANSLATION_Y 300
 #endif
 
 #ifndef ISOMETRIC_X_ANGLE 

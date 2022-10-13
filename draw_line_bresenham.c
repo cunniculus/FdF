@@ -158,7 +158,6 @@ t_list	*generate_image(t_data *mlx)
 	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z, mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z);
 	*/
 	transformed_map = translate(transformed_map);
-	mlx->bounds = map_boundaries(transformed_map);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
