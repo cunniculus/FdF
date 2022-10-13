@@ -20,6 +20,7 @@ t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point, t_rotated_angle a
 	static t_rotated_angle angle;
 	
 	angle = get_angle (angle, step_rot);
+	printf("Angles: %4d %4d %4d\n", angle.x, angle.y, angle.z);
 	rotated = NULL;
 	point = NULL;
 	while (map)
@@ -38,8 +39,8 @@ t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point, t_r
 	if (step_rot == isometric_rotation)
 	{
 		angle.x = (angle.x + ISOMETRIC_X_ANGLE) % 360;
-		angle.y = (angle.y + ISOMETRIC_X_ANGLE) % 360;
-		angle.z = (angle.z + ISOMETRIC_X_ANGLE) % 360;
+		angle.y = (angle.y + ISOMETRIC_Y_ANGLE) % 360;
+		angle.z = (angle.z + ISOMETRIC_Z_ANGLE) % 360;
 	}
 	else if (step_rot == rotation_x_right)
 		angle.x = (angle.x  + ROTATION_STEP) % 360;
