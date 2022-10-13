@@ -167,36 +167,55 @@ t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *))
 
 	//transformed_map = normalize(mlx->transformed_map);
 
-	transformed_map = scale(mlx->transformed_map, mlx->bounds);
+	scale(mlx->transformed_map, mlx->bounds);
+	// print test
+	printf("MLX->TRANSFORMED\n");
+	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("\nscale ok!\n");
+	printf("\nBOUNDS!\n");
+	mlx->bounds = map_boundaries(mlx->transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbounds ok!\n");
+
+	transformed_map = translate(mlx->transformed_map);
 	// print test
 	printf("transformed\n");
 	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
 		print_point((t_point *)tmp->content);
 	printf("MLX->TRANSFORMED\n");
-	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
-		print_point((t_point *)tmp->content);
-	printf("\nscale ok!\n");
-	mlx->bounds = map_boundaries(transformed_map);
-	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
-	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
-	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
-	printf("\nbouds ok!\n");
-
-	transformed_map = translate(mlx->transformed_map);
-	// print test
-	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
+	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
 		print_point((t_point *)tmp->content);
 	printf("\ntranslate: ok!\n");
+	printf("\nbounds!\n");
 	mlx->bounds = map_boundaries(transformed_map);
 	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
 	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
 	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
-	printf("\nbouds ok!\n");
+	printf("\nBOUNDS!\n");
+	mlx->bounds = map_boundaries(mlx->transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbounds ok!\n");
 
 	transformed_map = generate_rounded_points(transformed_map);
 	// print test
+	printf("transformed\n");
 	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
 		print_rounded_point((t_rounded_point *)tmp->content);
+	printf("MLX->TRANSFORMED\n");
+	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("\ntranslate: ok!\n");
+	printf("\nBOUNDS!\n");
+	mlx->bounds = map_boundaries(mlx->transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbounds ok!\n");
 	printf("\nrounding ok!\n");
 
 	plot(*mlx, transformed_map);	

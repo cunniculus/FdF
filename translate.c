@@ -2,18 +2,20 @@
 
 t_list	*translate(t_list *map)
 {
-    t_matrix    transl;
-	t_list		*tmp;
+	t_point		*point;
+	t_list		*translated;
 
-    init_transl_matrix(&transl);
-	tmp = map;
-	while (tmp)	
+	translated = NULL;
+	while (map)	
 	{
-		((t_point *)tmp->content)->x = ((t_point *)tmp->content)->x + 200;
-		((t_point *)tmp->content)->y = ((t_point *)tmp->content)->y + 200;
-		tmp = tmp->next;
+		point = malloc(sizeof (t_point));
+		point->x = ((t_point *)map->content)->x + 200;
+		point->y = ((t_point *)map->content)->y + 200;
+		point->z = 0;
+		ft_lstadd_back(&translated, ft_lstnew(point));
+		map = map->next;
 	}	
-	return (map);
+	return (translated);
 }
 
 
