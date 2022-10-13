@@ -9,8 +9,8 @@ t_list	*translate(t_list *map)
 	while (map)	
 	{
 		point = malloc(sizeof (t_point));
-		point->x = ((t_point *)map->content)->x + 200;
-		point->y = ((t_point *)map->content)->y + 200;
+		point->x = ((t_point *)map->content)->x + 350;
+		point->y = ((t_point *)map->content)->y + 350;
 		point->z = 0;
 		ft_lstadd_back(&translated, ft_lstnew(point));
 		map = map->next;
@@ -23,11 +23,11 @@ void	init_transl_matrix(t_matrix	*matrix)
 {
 	matrix->r1[0] = 1;
 	matrix->r1[1] = 0;
-	matrix->r1[2] = 90;
+	matrix->r1[2] = 100;
 
 	matrix->r2[0] = 0;
 	matrix->r2[1] = 1;
-	matrix->r2[2] = 80;
+	matrix->r2[2] = 90;
 
 	matrix->r3[0] = 0;
 	matrix->r3[1] = 0;

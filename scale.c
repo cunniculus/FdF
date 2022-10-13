@@ -26,12 +26,12 @@ void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range)
 	{
 		;
 	}
-	scale->r1[0] = 10;
+	scale->r1[0] = 30;
 	scale->r1[1] = 0;
 	scale->r1[2] = 0;
 
 	scale->r2[0] = 0;
-	scale->r2[1] = 10;
+	scale->r2[1] = 30;
 	scale->r2[2] = 0;
 
 	scale->r3[0] = 0;
