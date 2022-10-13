@@ -4,8 +4,10 @@ t_list	*translate(t_list *map)
 {
 	t_point		*point;
 	t_list		*translated;
+	t_list		*tmp;
 
 	translated = NULL;
+	tmp = map;
 	while (map)	
 	{
 		point = malloc(sizeof (t_point));
@@ -15,9 +17,9 @@ t_list	*translate(t_list *map)
 		ft_lstadd_back(&translated, ft_lstnew(point));
 		map = map->next;
 	}	
+	ft_lstclear(&tmp, free);
 	return (translated);
 }
-
 
 void	init_transl_matrix(t_matrix	*matrix)
 {

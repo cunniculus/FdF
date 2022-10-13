@@ -6,18 +6,20 @@ t_list  *scale(t_list *map, t_boundaries bound)
     float       y_range;
     t_matrix    scale;
 	t_list		*tmp;
+	t_point		*point;
 
     x_range = bound.max_x - bound.min_x;
     y_range = bound.max_y - bound.min_y;
     init_scale_matrix(&scale, x_range, y_range);
-
-	tmp = map;
-	while (tmp)	
+	tmp = NULL;
+	while (map)	
 	{
-		transformation(scale, tmp->content);
-		tmp = tmp->next;
+		point = malloc(sizeof (t_point));
+		*point = transformation(scale, map->content);
+		ft_lstadd_back(&tmp, ft_lstnew(point));
+		map = map->next;
 	}	
-	return (map);
+	return (tmp);
 }
 
 void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range)
@@ -36,5 +38,5 @@ void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range)
 
 	scale->r3[0] = 0;
 	scale->r3[1] = 0;
-	scale->r3[2] = 1;
+	scale->r3[2] = 30;
 }

@@ -4,7 +4,8 @@ t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *));
 t_list	*generate_rounded_points(t_list	*point_list);
 t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *));
 t_list	*generate_rotated_image(t_data *mlx, t_point *(*transformation)(t_point *));
-int		rotate_hook(int keycode, t_data *mlx);
+int		key_hook(int keycode, t_data *mlx);
+int		rotation_event(int keycode, t_data *mlx);
 
 void full_color_screen(t_data img, int color)
 {
@@ -21,25 +22,13 @@ void full_color_screen(t_data img, int color)
 	}
 }
 
-int	print_key(int keycode)
+int	handle_no_event(void *data)
 {
-	ft_printf("key %d pressed\n!", keycode);
-	return (0);
+
+	/* This function needs to exist, but it is useless for the moment */
+	return (*((int *)data));
 }
 
-int	close_win_key(int keycode, t_data *vars)
-{
-	ft_printf("key %d pressed\n!", keycode);
-	if (keycode == ESC)
-	{
-		mlx_destroy_image(vars->mlx_ptr, vars->img);
-		mlx_destroy_window(vars->mlx_ptr, vars->win_ptr);
-		mlx_destroy_display(vars->mlx_ptr);
-		free(vars->mlx_ptr);
-		exit(0);
-	}
-	return (0);
-}
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -72,7 +61,7 @@ int	main(int argc, char **argv)
 	if (!(mlx.map))
 		return (-3);
 	printf("map: ok\n");
-	mlx.transformed_map = generate_image(&mlx, isometric_projection);
+	mlx.transformed_map = generate_image(&mlx, isometric_rotation);
 	printf("generate_image:  aqui ok\n");
 
 	/*
@@ -84,10 +73,9 @@ int	main(int argc, char **argv)
 
 	//printf("put_image_to_window ok\n");
 
-	mlx_hook(mlx.win_ptr, ON_KEYDOWN, 1L<<0, close_win_key, &mlx);
-	mlx_hook(mlx.win_ptr, ON_KEYDOWN, 1L<<0, print_key, &mlx);
+	mlx_loop_hook(mlx.mlx_ptr, &handle_no_event, &mlx);
 
-	mlx_hook(mlx.win_ptr, ON_KEYDOWN, 1L<<0, rotate_hook, &mlx); 
+	mlx_hook(mlx.win_ptr, ON_KEYDOWN, 1L<<0, key_hook, &mlx); 
 
 	mlx_expose_hook(mlx.win_ptr, redraw_expose, &mlx);
 	mlx_loop(mlx.mlx_ptr);
@@ -102,30 +90,46 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int	rotate_hook(int keycode, t_data *mlx)
+int	key_hook(int keycode, t_data *mlx)
 {
-	ft_printf("rotate");
+	ft_printf("key %d pressed\n!", keycode);
 	full_color_screen(*mlx, 0x0);  
+	if (keycode >= L_ARROW && keycode <= D_ARROW)
+		rotation_event(keycode, mlx);
+	if (keycode == ESC)
+	{
+		mlx_destroy_image(mlx->mlx_ptr, mlx->img);
+		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+		mlx_destroy_display(mlx->mlx_ptr);
+		free(mlx->mlx_ptr);
+		exit(0);
+	}
+	return (0);
+}
+
+int	rotation_event(int keycode, t_data *mlx)
+{
 	if (keycode == R_ARROW)
 	{
+		printf("inside right arrow\n");
 		mlx->transformed_map = generate_rotated_image(mlx, rotation_x_right);
-		
-		for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
-			print_point((t_point *)tmp->content);
 		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 	}
-	else if (keycode == L_ARROW)
+	else if (keycode == 65361)
 	{
+		printf("inside left arrow\n");
 		mlx->transformed_map = generate_rotated_image(mlx, rotation_x_left);
 		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 	}
 	else if (keycode == U_ARROW)
 	{
+		printf("inside up arrow\n");
 		mlx->transformed_map = generate_rotated_image(mlx, rotation_y_right);
 		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 	}
 	else if (keycode == D_ARROW)
 	{
+		printf("inside down arrow\n");
 		mlx->transformed_map = generate_rotated_image(mlx, rotation_y_left);
 		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 	}
@@ -143,7 +147,10 @@ t_list	*generate_rotated_image(t_data *mlx, t_point *(*transformation)(t_point *
 		tmp->content = transformation((t_point *)tmp->content);	
 		tmp = tmp->next;
 	}
-	transformed_map = normalize(mlx->transformed_map);
+	//transformed_map = normalize(mlx->transformed_map);
+	transformed_map = translate(mlx->transformed_map);
+	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
@@ -156,11 +163,12 @@ t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *))
 	t_list	*transformed_map;
 
 	mlx->transformed_map = generate_points(mlx->map, transformation);
+	// print test
 	mlx->bounds = map_boundaries(mlx->transformed_map);
 	//transformed_map = normalize(mlx->transformed_map);
-	scale(mlx->transformed_map, mlx->bounds);
-	mlx->bounds = map_boundaries(mlx->transformed_map);
-	transformed_map = translate(mlx->transformed_map);
+	transformed_map = scale(mlx->transformed_map, mlx->bounds);
+	mlx->bounds = map_boundaries(transformed_map);
+	transformed_map = translate(transformed_map);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);

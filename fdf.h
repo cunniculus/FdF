@@ -98,7 +98,7 @@ enum
 	L_ARROW = 65361,
 	U_ARROW = 65362,
 	R_ARROW = 65363,
-	D_ARROW = 65364,
+	D_ARROW = 65364
 };
 
 typedef struct s_row_list
