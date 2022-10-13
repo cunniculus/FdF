@@ -10,11 +10,15 @@
 
 
 #ifndef SCALE 
-# define SCALE 30
+# define SCALE 20
+#endif
+
+#ifndef TRANSLATION 
+# define TRANSLATION 300
 #endif
 
 #ifndef ISOMETRIC_X_ANGLE 
-# define ISOMETRIC_X_ANGLE 35.264
+# define ISOMETRIC_X_ANGLE 35
 #endif
 
 #ifndef ISOMETRIC_Y_ANGLE 
@@ -23,6 +27,10 @@
 
 #ifndef ISOMETRIC_Z_ANGLE 
 # define ISOMETRIC_Z_ANGLE 45
+#endif
+
+#ifndef ROTATION_STEP
+# define ROTATION_STEP 3
 #endif
 
 #ifndef WIDTH
@@ -122,18 +130,22 @@ typedef struct s_row_list
 */
 int	setup_mlx(t_data *mlx);
 
-float	dot_product(float row[3], t_point *point);
+// linear transformation - matrix multiplication
+float	dot_product(float row[3], t_point point);
+t_point	transformation(t_matrix rotation, t_point point);
+
 // rotations 
-t_point	*isometric_rotation(t_point *point);
-t_list	*step_rotation(t_list *map, t_point *(*step_rot)(t_point *));
+t_list	*step_rotation(t_list *map,t_point (*step_rot)(t_point));
+t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point));
+t_point isometric_rotation(t_point point);
+t_point	rotation_x_right(t_point point);
+t_point	rotation_x_left(t_point point);
+t_point	rotation_y_right(t_point point);
+t_point	rotation_y_left(t_point point);
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
 void	init_rot_matrix_y(t_matrix *rotation, float degrees);
 void	init_rot_matrix_z(t_matrix *rotation, float degrees);
-t_point	*rotation_x_right(t_point *point);
-t_point	*rotation_x_left(t_point *point);
-t_point	*rotation_y_right(t_point *point);
-t_point	*rotation_y_left(t_point *point);
-t_point	transformation(t_matrix rotation, t_point *point);
+
 
 // isometric_projection
 t_point	isometric_projection(t_point *point);

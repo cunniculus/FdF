@@ -6,9 +6,7 @@ t_point	isometric_projection(t_point *point)
 {
 	point->z = 0;
 	return (*point);
-
 }
-
 
 void print_point(t_point *point)
 {

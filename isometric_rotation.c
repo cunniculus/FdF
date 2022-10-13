@@ -1,73 +1,105 @@
 #include <math.h>
 #include "fdf.h"
 
-t_point	*isometric_rotation(t_point	*point)
+t_point	isometric_rotation(t_point point)
 {
-	t_matrix	rotation;
+	t_matrix		rotation;
+	t_point			transformed_point;
 
 	init_rot_matrix_z(&rotation, ISOMETRIC_Z_ANGLE);
-	transformation(rotation, point);
+	transformed_point = transformation(rotation, point);
 	init_rot_matrix_x(&rotation, ISOMETRIC_X_ANGLE);
-	transformation(rotation, point);
-	return (point);
+	transformed_point = transformation(rotation, transformed_point);
+	return (transformed_point);
 }
 
-t_list	*step_rotation(t_list *map, t_point *(*step_rot)(t_point *))
+t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point))
 {
-	t_list	*points;
-
-	points = map;
-	while (points)
+	t_list	*rotated;
+	t_point	*point;
+	static t_rotated_angle angle;
+	
+	angle = get_angle (angle, step_rot);
+	rotated = NULL;
+	point = NULL;
+	while (map)
 	{
-		step_rot(points->content);
-		points = points->next;
+		point = malloc(sizeof (t_point));
+		*point = *((t_point *)map->content);
+		*point = step_rot(*point);
+		ft_lstadd_back(&rotated, ft_lstnew(point));
+		map = map->next;
 	}
-	return (map);
+	return (rotated);
 }
 
-t_point		*rotation_x_right(t_point *point)
+t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point))
 {
-	t_matrix	rotation;
-	
-	init_rot_matrix_x(&rotation, 2);
-	transformation(rotation, point);
-	return (point);
+	if (step_rot == isometric_rotation)
+	{
+		angle.x = (angle.x + ISOMETRIC_X_ANGLE) % 360;
+		angle.y = (angle.y + ISOMETRIC_X_ANGLE) % 360;
+		angle.z = (angle.z + ISOMETRIC_X_ANGLE) % 360;
+	}
+	else if (step_rot == rotation_x_right)
+		angle.x = (angle.x  + ROTATION_STEP) % 360;
+	else if (step_rot == rotation_y_right)
+		angle.y = (angle.y  + ROTATION_STEP) % 360;
+	else if (step_rot == rotation_x_left)
+		angle.x = (angle.x  - ROTATION_STEP) % 360;
+	else if (step_rot == rotation_y_left)
+		angle.y = (angle.y  - ROTATION_STEP) % 360;
+	return (angle);
 }
 
-t_point		*rotation_x_left(t_point *point)
+t_point	rotation_x_right(t_point point)
 {
 	t_matrix	rotation;
+	t_point		transformed_point;
 	
-	init_rot_matrix_x(&rotation, -2);
-	transformation(rotation, point);
-	return (point);
-}
-t_point		*rotation_y_right(t_point *point)
-{
-	t_matrix	rotation;
-	
-	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_y(&rotation, 2);
-	transformation(rotation, point);
-	return (point);
+	init_rot_matrix_x(&rotation, ROTATION_STEP);
+	transformed_point =  transformation(rotation, point);
+	return (transformed_point);
 }
 
-t_point		*rotation_y_left(t_point *point)
+t_point	rotation_x_left(t_point point)
 {
 	t_matrix	rotation;
+	t_point		transformed_point;
 	
-	//printf("Inside rotation_x: ok\n");
-	init_rot_matrix_y(&rotation, -2);
-	transformation(rotation, point);
-	return (point);
+	init_rot_matrix_x(&rotation, -ROTATION_STEP);
+	transformed_point =  transformation(rotation, point);
+	return (transformed_point);
 }
 
-t_point	transformation(t_matrix matrix, t_point *point)
+t_point	rotation_y_right(t_point point)
 {
-	point->x = dot_product(matrix.r1, point);
-	point->y = dot_product(matrix.r2, point);
-	point->z = dot_product(matrix.r3, point);
-	return (*point);
+	t_matrix	rotation;
+	t_point		transformed_point;
+	
+	init_rot_matrix_y(&rotation, ROTATION_STEP);
+	transformed_point =  transformation(rotation, point);
+	return (transformed_point);
+}
+
+t_point	rotation_y_left(t_point point)
+{
+	t_matrix	rotation;
+	t_point		transformed_point;
+	
+	init_rot_matrix_y(&rotation, -ROTATION_STEP);
+	transformed_point =  transformation(rotation, point);
+	return (transformed_point);
+}
+
+t_point	transformation(t_matrix matrix, t_point point)
+{
+	t_point	transformed_point;
+
+	transformed_point.x = dot_product(matrix.r1, point);
+	transformed_point.y = dot_product(matrix.r2, point);
+	transformed_point.z = dot_product(matrix.r3, point);
+	return (transformed_point);
 }
 
 void	init_rot_matrix_x(t_matrix	*rotation, float degrees)
@@ -125,10 +157,10 @@ void	init_rot_matrix_z(t_matrix	*rotation, float degrees)
 	rotation->r3[2] = 1;
 }
 
-float	dot_product(float row[3], t_point *point)
+float	dot_product(float row[3], t_point point)
 {
 	float	dp;
 
-	dp = row[0] * point->x + row[1] * point->y + row[2] * point->z;
+	dp = row[0] * point.x + row[1] * point.y + row[2] * point.z;
 	return (dp);
 }

@@ -11,8 +11,9 @@ t_list	*translate(t_list *map)
 	while (tmp)	
 	{
 		point = malloc(sizeof (t_point));
-		point->x = ((t_point *)tmp->content)->x + 350;
-		point->y = ((t_point *)tmp->content)->y + 350;
+		point->x = ((t_point *)tmp->content)->x + TRANSLATION;
+		point->y = ((t_point *)tmp->content)->y + TRANSLATION;
+		point->z = ((t_point *)tmp->content)->z;
 		ft_lstadd_back(&translated, ft_lstnew(point));
 		tmp = tmp->next;
 	}	
