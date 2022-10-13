@@ -65,3 +65,10 @@ void print_point(t_point *point)
 	printf("%6.1f", point->y);
 	printf("%6.1f\n", point->z);
 }
+
+void print_rounded_point(t_rounded_point *point)
+{
+	printf("%5d", point->x);
+	printf("%5d", point->y);
+	printf("%5d\n", point->z);
+}

@@ -8,6 +8,8 @@
 #include "libft.h"
 #include <mlx.h>
 
+
+
 #ifndef WIDTH
 # define WIDTH 900
 #endif
@@ -29,14 +31,11 @@ typedef struct	s_data
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
-
-typedef struct	s_window
-{
+	t_list	*map;
+	t_list	*transformed_map;
 	void	*mlx_ptr;
 	void	*win_ptr;
-	void	*img;
-}	t_window;
+}	t_data;
 	
 
 
@@ -81,7 +80,12 @@ enum
 	ON_MOUSEUP = 5,
 	ON_MOUSEMOVE = 6,
 	ON_EXPOSE = 12,
-	ON_DESTROY = 17
+	ON_DESTROY = 17,
+	ESC = 65307,
+	L_ARROW = 65361,
+	U_ARROW = 65362,
+	R_ARROW = 65363,
+	D_ARROW = 65364,
 };
 
 typedef struct s_row_list
@@ -90,35 +94,39 @@ typedef struct s_row_list
 	struct s_row_list	*next;
 }	t_row_list;
 
-int	setup_mlx(t_window *mlx, t_data *img);
-/*
-void	plot (int x, int y);
-*/
-// isometric_rotation
+int	setup_mlx(t_data *mlx);
+
+float	dot_product(float row[3], t_point *point);
+// rotations 
 t_point	isometric_rotation(t_point *point);
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
 void	init_rot_matrix_y(t_matrix *rotation, float degrees);
 void	init_rot_matrix_z(t_matrix *rotation, float degrees);
-float	dot_product(float row[3], t_point *point);
+t_point	*rotation_x_right(t_point *point);
+t_point	*rotation_x_left(t_point *point);
+t_point	*rotation_y_right(t_point *point);
+t_point	*rotation_y_left(t_point *point);
 t_point	rotation_transformation(t_matrix rotation, t_point *point);
 
 // isometric_projection
 t_point	isometric_projection(t_point *point);
 void	print_point(t_point *point);
+void	print_rounded_point(t_rounded_point *point);
+
 //void	init_proj_matrix(t_proj_matrix *projection);
 //t_point	projection_transformation(t_proj_matrix projection, t_point *point);
 
 // read_file
-t_list	**get_map(char *map_name, t_list **list);
-t_list	**get_row(int fd, t_list **list);
+t_list	*get_map(char *map_name, t_data *mlx);
+t_list	*get_row(int fd, t_list **list);
 int		get_row_size(char **row_str);
 int		*make_row_int(char **row_str);
 void	free_row(char **row);
 
 // draw_line
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int	redraw_expose(t_window *vars);
-void	plot(t_data img, t_list *map, t_list *transformed_map);
+int	redraw_expose(t_data *vars);
+void	plot(t_data img, t_list *transformed_map);
 
 
 //bresenham.c
@@ -127,7 +135,7 @@ void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
 void plot_line(int x0, int y0, int x1, int y1, t_data img);
 
 // normalize
-t_list	**normalize(t_list **map);
+t_list	*normalize(t_list *map);
 t_point	max_coord_values(t_list	*list);
 t_point	min_coord_values(t_list	*list);
 

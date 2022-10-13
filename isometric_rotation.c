@@ -6,12 +6,55 @@ t_point		isometric_rotation(t_point *point)
 {
 	t_matrix	rotation;
 
-	init_rot_matrix_x(&rotation,  35.264);
+	init_rot_matrix_z(&rotation, 45 );
 	rotation_transformation(rotation, point);
-	init_rot_matrix_y(&rotation,  45);
+	init_rot_matrix_x(&rotation, 35.264 );
 	rotation_transformation(rotation, point);
 
 	return (*point);
+}
+
+t_point		*rotation_x_right(t_point *point)
+{
+	t_matrix	rotation;
+	
+	//printf("Inside rotation_x: ok\n");
+	init_rot_matrix_x(&rotation, 20);
+	rotation_transformation(rotation, point);
+	point->z = 0;
+	return (point);
+}
+
+t_point		*rotation_x_left(t_point *point)
+{
+	t_matrix	rotation;
+	
+	//printf("Inside rotation_x: ok\n");
+	init_rot_matrix_x(&rotation, -20);
+	rotation_transformation(rotation, point);
+	point->z = 0;
+	return (point);
+}
+t_point		*rotation_y_right(t_point *point)
+{
+	t_matrix	rotation;
+	
+	//printf("Inside rotation_x: ok\n");
+	init_rot_matrix_y(&rotation, 20);
+	rotation_transformation(rotation, point);
+	point->z = 0;
+	return (point);
+}
+
+t_point		*rotation_y_left(t_point *point)
+{
+	t_matrix	rotation;
+	
+	//printf("Inside rotation_x: ok\n");
+	init_rot_matrix_y(&rotation, -20);
+	rotation_transformation(rotation, point);
+	point->z = 0;
+	return (point);
 }
 
 t_point	rotation_transformation(t_matrix rotation, t_point *point)
@@ -28,7 +71,7 @@ void	init_rot_matrix_x(t_matrix	*rotation, float degrees)
 {
 	float angle;
 
-	angle = M_PI * degrees / 180;
+	angle = (M_PI * degrees / 180);
 	rotation->r1[0] = 1;
 	rotation->r1[1] = 0;
 	rotation->r1[2] = 0;
