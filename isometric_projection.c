@@ -4,7 +4,6 @@
 
 t_point	isometric_projection(t_point *point)
 {
-	isometric_rotation(point);
 	point->z = 0;
 	return (*point);
 

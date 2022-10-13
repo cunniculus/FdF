@@ -111,7 +111,7 @@ int	setup_mlx(t_data *mlx);
 
 float	dot_product(float row[3], t_point *point);
 // rotations 
-t_point	isometric_rotation(t_point *point);
+t_list	*isometric_rotation(t_list *map);
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
 void	init_rot_matrix_y(t_matrix *rotation, float degrees);
 void	init_rot_matrix_z(t_matrix *rotation, float degrees);

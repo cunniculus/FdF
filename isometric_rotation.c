@@ -1,17 +1,21 @@
 #include <math.h>
 #include "fdf.h"
 
-t_point		isometric_rotation(t_point *point)
-
+t_list	*isometric_rotation(t_list	*map)
 {
 	t_matrix	rotation;
+	t_list	*points;
 
-	init_rot_matrix_z(&rotation, 45);
-	transformation(rotation, point);
-	init_rot_matrix_x(&rotation, 35.264);
-	transformation(rotation, point);
-
-	return (*point);
+	points = map;
+	while (points)
+	{
+		init_rot_matrix_z(&rotation, 45);
+		transformation(rotation, points->content);
+		init_rot_matrix_x(&rotation, 35.264);
+		transformation(rotation, points->content);
+		points = points->next;
+	}
+	return (map);
 }
 
 t_point		*rotation_x_right(t_point *point)

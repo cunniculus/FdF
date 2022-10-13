@@ -1,8 +1,8 @@
 #include "fdf.h"
 
-t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *));
+t_list	*generate_points(t_list *map);
 t_list	*generate_rounded_points(t_list	*point_list);
-t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *));
+t_list	*generate_image(t_data *mlx);
 t_list	*generate_rotated_image(t_data *mlx, t_point *(*transformation)(t_point *));
 int		key_hook(int keycode, t_data *mlx);
 int		rotation_event(int keycode, t_data *mlx);
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 	if (!(mlx.map))
 		return (-3);
 	printf("map: ok\n");
-	mlx.transformed_map = generate_image(&mlx, isometric_rotation);
+	mlx.transformed_map = generate_image(&mlx);
 	printf("generate_image:  aqui ok\n");
 
 	/*
@@ -149,8 +149,6 @@ t_list	*generate_rotated_image(t_data *mlx, t_point *(*transformation)(t_point *
 	}
 	//transformed_map = normalize(mlx->transformed_map);
 	transformed_map = translate(mlx->transformed_map);
-	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
-		print_point((t_point *)tmp->content);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
@@ -158,24 +156,34 @@ t_list	*generate_rotated_image(t_data *mlx, t_point *(*transformation)(t_point *
 }
 
 
-t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *))
+t_list	*generate_image(t_data *mlx)
 {
 	t_list	*transformed_map;
 
-	mlx->transformed_map = generate_points(mlx->map, transformation);
+	mlx->transformed_map = generate_points(mlx->map);
 	// print test
+		for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+			print_point((t_point *)tmp->content);
 	mlx->bounds = map_boundaries(mlx->transformed_map);
 	//transformed_map = normalize(mlx->transformed_map);
-	transformed_map = scale(mlx->transformed_map, mlx->bounds);
+	isometric_rotation(mlx->transformed_map);
+		for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+			print_point((t_point *)tmp->content);
+	scale(mlx->transformed_map, mlx->bounds);
+		for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+			print_point((t_point *)tmp->content);
 	mlx->bounds = map_boundaries(transformed_map);
-	transformed_map = translate(transformed_map);
+	transformed_map = translate(mlx->transformed_map);
+	printf("translated:\n");
+		for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+			print_point((t_point *)tmp->content);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
 	return (mlx->transformed_map);
 }
 
-t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *))
+t_list	*generate_points(t_list *map)
 {
 	t_list	*transformed_map;
 	t_point	*point;
@@ -193,7 +201,6 @@ t_list	*generate_points(t_list *map, t_point(*transformation)(t_point *))
 			point->x = i;
 			point->y = j;
 			point->z = ((int *)map->content)[i++];
-			transformation(point);
 			ft_lstadd_back(&transformed_map, ft_lstnew(point));
 		}
 		map = map->next;
