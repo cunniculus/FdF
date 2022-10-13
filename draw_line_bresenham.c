@@ -137,14 +137,14 @@ int	rotation_event(int keycode, t_data *mlx)
 t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle))
 {
 	t_list	*transformed_map;
-	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
-		print_point((t_point *)tmp->content);
-	step_rotation(mlx->transformed_map, rotation);
-	transformed_map = scale(mlx->transformed_map, mlx->bounds);
+	mlx->bounds = map_boundaries(mlx->transformed_map);
+	transformed_map = step_rotation(mlx->transformed_map, rotation);
+	transformed_map = scale(transformed_map, mlx->bounds);
 	transformed_map = translate(transformed_map);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
+
 	return (mlx->transformed_map);
 }
 
