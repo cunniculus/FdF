@@ -132,13 +132,16 @@ int	rotation_event(int keycode, t_data *mlx)
 t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle))
 {
 	t_list	*transformed_map;
+	t_list	*isometric;
 	mlx->bounds = map_boundaries(mlx->transformed_map);
-	transformed_map = step_rotation(mlx->transformed_map, rotation);
+	isometric = step_rotation(mlx->transformed_map, isometric_rotation);
+	transformed_map = step_rotation(isometric, rotation);
 	transformed_map = scale(transformed_map, mlx->bounds);
 	transformed_map = translate(transformed_map);
 	transformed_map = generate_rounded_points(transformed_map);
 	plot(*mlx, transformed_map);	
 	ft_lstclear(&transformed_map, free);
+	ft_lstclear(&isometric, free);
 	return (mlx->transformed_map);
 }
 
@@ -151,8 +154,6 @@ t_list	*generate_image(t_data *mlx)
 	transformed_map = step_rotation(mlx->transformed_map, isometric_rotation);
 	transformed_map = scale(transformed_map, mlx->bounds);
 	/*
-	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
-		print_point((t_point *)tmp->content);
 	mlx->bounds = map_boundaries(transformed_map);
 	printf("Boundaries %5.1f %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
 	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z, mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z);

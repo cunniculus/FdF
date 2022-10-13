@@ -22,7 +22,7 @@
 #endif
 
 #ifndef ISOMETRIC_X_ANGLE 
-# define ISOMETRIC_X_ANGLE 35
+# define ISOMETRIC_X_ANGLE 34
 #endif
 
 #ifndef ISOMETRIC_Y_ANGLE 
@@ -30,11 +30,11 @@
 #endif
 
 #ifndef ISOMETRIC_Z_ANGLE 
-# define ISOMETRIC_Z_ANGLE 45
+# define ISOMETRIC_Z_ANGLE 44
 #endif
 
 #ifndef ROTATION_STEP
-# define ROTATION_STEP 3
+# define ROTATION_STEP 2
 #endif
 
 #ifndef WIDTH
