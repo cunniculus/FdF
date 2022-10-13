@@ -64,6 +64,10 @@ t_point	rotation_x_right(t_point point, t_rotated_angle angle)
 	
 	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
+	init_rot_matrix_y(&rotation, angle.y);
+	transformed_point =  transformation(rotation, transformed_point);
+	init_rot_matrix_z(&rotation, angle.z);
+	transformed_point =  transformation(rotation, transformed_point);
 	return (transformed_point);
 }
 
@@ -74,6 +78,10 @@ t_point	rotation_x_left(t_point point, t_rotated_angle angle)
 	
 	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
+	init_rot_matrix_y(&rotation, angle.y);
+	transformed_point =  transformation(rotation, transformed_point);
+	init_rot_matrix_z(&rotation, angle.z);
+	transformed_point =  transformation(rotation, transformed_point);
 	return (transformed_point);
 }
 
@@ -82,8 +90,12 @@ t_point	rotation_y_right(t_point point, t_rotated_angle angle)
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_y(&rotation, angle.y);
+	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
+	init_rot_matrix_y(&rotation, angle.y);
+	transformed_point =  transformation(rotation, transformed_point);
+	init_rot_matrix_z(&rotation, angle.z);
+	transformed_point =  transformation(rotation, transformed_point);
 	return (transformed_point);
 }
 
@@ -92,8 +104,12 @@ t_point	rotation_y_left(t_point point, t_rotated_angle angle)
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_y(&rotation, angle.y);
+	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
+	init_rot_matrix_y(&rotation, angle.y);
+	transformed_point =  transformation(rotation, transformed_point);
+	init_rot_matrix_z(&rotation, angle.z);
+	transformed_point =  transformation(rotation, transformed_point);
 	return (transformed_point);
 }
 
