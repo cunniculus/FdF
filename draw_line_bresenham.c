@@ -3,7 +3,7 @@
 t_list	*generate_points(t_list *map);
 t_list	*generate_rounded_points(t_list	*point_list);
 t_list	*generate_image(t_data *mlx);
-t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point));
+t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle));
 int		key_hook(int keycode, t_data *mlx);
 int		rotation_event(int keycode, t_data *mlx);
 
@@ -134,7 +134,7 @@ int	rotation_event(int keycode, t_data *mlx)
 	return (0);
 }
 
-t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point))
+t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle))
 {
 	t_list	*transformed_map;
 	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)

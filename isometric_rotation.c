@@ -1,19 +1,19 @@
 #include <math.h>
 #include "fdf.h"
 
-t_point	isometric_rotation(t_point point)
+t_point	isometric_rotation(t_point point, t_rotated_angle angle)
 {
 	t_matrix		rotation;
 	t_point			transformed_point;
 
-	init_rot_matrix_z(&rotation, ISOMETRIC_Z_ANGLE);
+	init_rot_matrix_z(&rotation, angle.z);
 	transformed_point = transformation(rotation, point);
-	init_rot_matrix_x(&rotation, ISOMETRIC_X_ANGLE);
+	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point = transformation(rotation, transformed_point);
 	return (transformed_point);
 }
 
-t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point))
+t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point, t_rotated_angle angle))
 {
 	t_list	*rotated;
 	t_point	*point;
@@ -26,14 +26,14 @@ t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point))
 	{
 		point = malloc(sizeof (t_point));
 		*point = *((t_point *)map->content);
-		*point = step_rot(*point);
+		*point = step_rot(*point, angle);
 		ft_lstadd_back(&rotated, ft_lstnew(point));
 		map = map->next;
 	}
 	return (rotated);
 }
 
-t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point))
+t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point, t_rotated_angle angle))
 {
 	if (step_rot == isometric_rotation)
 	{
@@ -52,42 +52,42 @@ t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point))
 	return (angle);
 }
 
-t_point	rotation_x_right(t_point point)
+t_point	rotation_x_right(t_point point, t_rotated_angle angle)
 {
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_x(&rotation, ROTATION_STEP);
+	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
 	return (transformed_point);
 }
 
-t_point	rotation_x_left(t_point point)
+t_point	rotation_x_left(t_point point, t_rotated_angle angle)
 {
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_x(&rotation, -ROTATION_STEP);
+	init_rot_matrix_x(&rotation, angle.x);
 	transformed_point =  transformation(rotation, point);
 	return (transformed_point);
 }
 
-t_point	rotation_y_right(t_point point)
+t_point	rotation_y_right(t_point point, t_rotated_angle angle)
 {
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_y(&rotation, ROTATION_STEP);
+	init_rot_matrix_y(&rotation, angle.y);
 	transformed_point =  transformation(rotation, point);
 	return (transformed_point);
 }
 
-t_point	rotation_y_left(t_point point)
+t_point	rotation_y_left(t_point point, t_rotated_angle angle)
 {
 	t_matrix	rotation;
 	t_point		transformed_point;
 	
-	init_rot_matrix_y(&rotation, -ROTATION_STEP);
+	init_rot_matrix_y(&rotation, angle.y);
 	transformed_point =  transformation(rotation, point);
 	return (transformed_point);
 }
