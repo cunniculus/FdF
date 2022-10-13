@@ -59,20 +59,21 @@ int	redraw_expose(t_data *vars)
 
 int	main(int argc, char **argv)
 {
-	t_data		mlx;
+	t_data			mlx;
 
 	if (argc != 2)
 		return (-2);
 	if (!setup_mlx(&mlx))
 		return (-3);
+	printf("setup ok:  aqui ok\n");
 	// get map and store data in a list; each node, one row of the map; first node has bottom row
 	mlx.map = NULL;
-	printf("generate_image:  aqui ok\n");
 	get_map(argv[1], &mlx);
 	if (!(mlx.map))
 		return (-3);
-	printf("generate_image:  aqui ok\n");
+	printf("map: ok\n");
 	mlx.transformed_map = generate_image(&mlx, isometric_projection);
+	printf("generate_image:  aqui ok\n");
 
 	/*
 	// print test
@@ -154,17 +155,53 @@ t_list	*generate_image(t_data *mlx, t_point(*transformation)(t_point *))
 {
 	t_list	*transformed_map;
 
-	printf("clear 2: OK\n");
 	mlx->transformed_map = generate_points(mlx->map, transformation);
-	printf("clear 2: OK\n");
-	transformed_map = normalize(mlx->transformed_map);
-	printf("clear 2: OK\n");
+	for(t_list *tmp = mlx->transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("\ngen_points ok!\n");
+	mlx->bounds = map_boundaries(mlx->transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbouds ok!\n");
+
+	//transformed_map = normalize(mlx->transformed_map);
+
+	transformed_map = scale(mlx->transformed_map, mlx->bounds);
+	// print test
+	printf("transformed\n");
+	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("MLX->TRANSFORMED\n");
+	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("\nscale ok!\n");
+	mlx->bounds = map_boundaries(transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbouds ok!\n");
+
+	transformed_map = translate(mlx->transformed_map);
+	// print test
+	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
+		print_point((t_point *)tmp->content);
+	printf("\ntranslate: ok!\n");
+	mlx->bounds = map_boundaries(transformed_map);
+	printf("%5.1f  %5.1f %5.1f %5.1f %5.1f %5.1f\n",\
+	mlx->bounds.max_x, mlx->bounds.max_y, mlx->bounds.max_z,\
+	mlx->bounds.min_x, mlx->bounds.min_y, mlx->bounds.min_z);
+	printf("\nbouds ok!\n");
+
 	transformed_map = generate_rounded_points(transformed_map);
-	printf("clear 2: OK\n");
+	// print test
+	for(t_list *tmp = transformed_map; tmp; tmp = tmp->next)
+		print_rounded_point((t_rounded_point *)tmp->content);
+	printf("\nrounding ok!\n");
+
 	plot(*mlx, transformed_map);	
-	printf("clear 2: OK\n");
+	printf("\nplot ok!\n");
 	ft_lstclear(&transformed_map, free);
-	printf("clear 2: OK\n");
 	return (mlx->transformed_map);
 }
 

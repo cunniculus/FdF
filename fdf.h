@@ -24,6 +24,16 @@
 
 #define MLX_ERROR -1
 
+typedef struct s_boundaries
+{
+	float	min_x;
+	float	min_y;
+	float	min_z;
+	float	max_x;
+	float	max_y;
+	float	max_z;
+}	t_boundaries;
+
 typedef struct	s_data
 {
 	void	*img;
@@ -35,6 +45,7 @@ typedef struct	s_data
 	t_list	*transformed_map;
 	void	*mlx_ptr;
 	void	*win_ptr;
+	t_boundaries	bounds;
 }	t_data;
 	
 
@@ -72,6 +83,8 @@ typedef struct	s_rounded_point
 	int		color;
 }	t_rounded_point;
 
+
+
 enum
 {
 	ON_KEYDOWN = 2,
@@ -106,7 +119,7 @@ t_point	*rotation_x_right(t_point *point);
 t_point	*rotation_x_left(t_point *point);
 t_point	*rotation_y_right(t_point *point);
 t_point	*rotation_y_left(t_point *point);
-t_point	rotation_transformation(t_matrix rotation, t_point *point);
+t_point	transformation(t_matrix rotation, t_point *point);
 
 // isometric_projection
 t_point	isometric_projection(t_point *point);
@@ -139,5 +152,16 @@ t_list	*normalize(t_list *map);
 t_point	max_coord_values(t_list	*list);
 t_point	min_coord_values(t_list	*list);
 
+
+// scale
+t_list  *scale(t_list *map, t_boundaries bound);
+void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range);
+
+// translate
+t_list	*translate(t_list *map);
+void	init_transl_matrix(t_matrix	*matrix);
+t_boundaries	map_boundaries(t_list *list);
+t_boundaries	min_coord(t_list *list, t_boundaries *bound);
+t_boundaries	max_coord(t_list *list, t_boundaries *bound);
 
 #endif

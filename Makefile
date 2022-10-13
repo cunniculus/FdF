@@ -1,6 +1,8 @@
 NAME			:= program 
 SOURCE			:= isometric_projection.c\
 				   isometric_rotation.c\
+				   scale.c\
+				   translate.c\
 				   read_file.c\
 				   bresenham.c\
 				   draw_line_bresenham.c

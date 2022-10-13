@@ -6,10 +6,10 @@ t_point		isometric_rotation(t_point *point)
 {
 	t_matrix	rotation;
 
-	init_rot_matrix_z(&rotation, 45 );
-	rotation_transformation(rotation, point);
-	init_rot_matrix_x(&rotation, 35.264 );
-	rotation_transformation(rotation, point);
+	init_rot_matrix_z(&rotation, 45);
+	transformation(rotation, point);
+	init_rot_matrix_x(&rotation, 35.264);
+	transformation(rotation, point);
 
 	return (*point);
 }
@@ -20,7 +20,7 @@ t_point		*rotation_x_right(t_point *point)
 	
 	//printf("Inside rotation_x: ok\n");
 	init_rot_matrix_x(&rotation, 20);
-	rotation_transformation(rotation, point);
+	transformation(rotation, point);
 	point->z = 0;
 	return (point);
 }
@@ -31,7 +31,7 @@ t_point		*rotation_x_left(t_point *point)
 	
 	//printf("Inside rotation_x: ok\n");
 	init_rot_matrix_x(&rotation, -20);
-	rotation_transformation(rotation, point);
+	transformation(rotation, point);
 	point->z = 0;
 	return (point);
 }
@@ -41,7 +41,7 @@ t_point		*rotation_y_right(t_point *point)
 	
 	//printf("Inside rotation_x: ok\n");
 	init_rot_matrix_y(&rotation, 20);
-	rotation_transformation(rotation, point);
+	transformation(rotation, point);
 	point->z = 0;
 	return (point);
 }
@@ -52,18 +52,16 @@ t_point		*rotation_y_left(t_point *point)
 	
 	//printf("Inside rotation_x: ok\n");
 	init_rot_matrix_y(&rotation, -20);
-	rotation_transformation(rotation, point);
+	transformation(rotation, point);
 	point->z = 0;
 	return (point);
 }
 
-t_point	rotation_transformation(t_matrix rotation, t_point *point)
+t_point	transformation(t_matrix matrix, t_point *point)
 {
-
-	point->x = dot_product(rotation.r1, point);
-	point->y = dot_product(rotation.r2, point);
-	point->z = dot_product(rotation.r3, point);
-
+	point->x = dot_product(matrix.r1, point);
+	point->y = dot_product(matrix.r2, point);
+	point->z = dot_product(matrix.r3, point);
 	return (*point);
 }
 
