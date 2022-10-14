@@ -1,15 +1,46 @@
-#include <math.h>
 #include "fdf.h"
 
-t_point	isometric_rotation(t_point point, t_rotated_angle angle)
+t_list	*rotation(t_list *map, int keycode)
+{
+	t_list	*rotated;
+	t_point	*point;
+	static t_rotated_angle angle;
+	
+	angle = get_angle (angle, keycode);
+	rotated = NULL;
+	point = NULL;
+	while (map)
+	{
+		point = malloc(sizeof (t_point));
+		*point = *((t_point *)map->content);
+		if (keycode >= L_ARROW && keycode <= D_ARROW)
+			*point = step_rotation(*point, angle);
+		else if (!keycode)
+			*point = isometric_rotation(*point);
+		ft_lstadd_back(&rotated, ft_lstnew(point));
+		map = map->next;
+	}
+	return (rotated);
+}
+
+t_rotated_angle	get_angle(t_rotated_angle angle, int keycode)
+{
+	if (keycode == U_ARROW)
+		angle.x = (angle.x  + ROTATION_STEP) % 360;
+	else if (keycode == D_ARROW)
+		angle.x = (angle.x  - ROTATION_STEP) % 360;
+	else if (keycode == R_ARROW)
+		angle.y = (angle.y  + ROTATION_STEP) % 360;
+	else if (keycode == L_ARROW)
+		angle.y = (angle.y  - ROTATION_STEP) % 360;
+	return (angle);
+}
+
+t_point	isometric_rotation(t_point point)
 {
 	t_matrix		rotation;
 	t_point			transformed_point;
 
-	if (angle.x)
-	{
-		;
-	}
 	init_rot_matrix_z(&rotation, ISOMETRIC_Z_ANGLE);
 	transformed_point = transformation(rotation, point);
 	init_rot_matrix_x(&rotation, ISOMETRIC_X_ANGLE);
@@ -17,89 +48,7 @@ t_point	isometric_rotation(t_point point, t_rotated_angle angle)
 	return (transformed_point);
 }
 
-t_list	*step_rotation(t_list *map, t_point(*step_rot)(t_point, t_rotated_angle angle))
-{
-	t_list	*rotated;
-	t_point	*point;
-	static t_rotated_angle angle;
-	
-	angle = get_angle (angle, step_rot);
-	printf("Angles: %4d %4d %4d\n", angle.x, angle.y, angle.z);
-	rotated = NULL;
-	point = NULL;
-	while (map)
-	{
-		point = malloc(sizeof (t_point));
-		*point = *((t_point *)map->content);
-		*point = step_rot(*point, angle);
-		ft_lstadd_back(&rotated, ft_lstnew(point));
-		map = map->next;
-	}
-	return (rotated);
-}
-
-t_rotated_angle	get_angle(t_rotated_angle angle, t_point(*step_rot)(t_point, t_rotated_angle angle))
-{
-	// if (step_rot == isometric_rotation && !angle.x && ! angle.y && !angle.z)
-	// {
-	// 	angle.x = ISOMETRIC_X_ANGLE;
-	// 	angle.y = ISOMETRIC_Y_ANGLE;
-	// 	angle.z = ISOMETRIC_Z_ANGLE;
-	// }
-	if (step_rot == rotation_x_right)
-		angle.x = (angle.x  + ROTATION_STEP) % 360;
-	else if (step_rot == rotation_y_right)
-		angle.y = (angle.y  + ROTATION_STEP) % 360;
-	else if (step_rot == rotation_x_left)
-		angle.x = (angle.x  - ROTATION_STEP) % 360;
-	else if (step_rot == rotation_y_left)
-		angle.y = (angle.y  - ROTATION_STEP) % 360;
-	return (angle);
-}
-
-t_point	rotation_x_right(t_point point, t_rotated_angle angle)
-{
-	t_matrix	rotation;
-	t_point		transformed_point;
-	
-	init_rot_matrix_x(&rotation, angle.x);
-	transformed_point =  transformation(rotation, point);
-	init_rot_matrix_y(&rotation, angle.y);
-	transformed_point =  transformation(rotation, transformed_point);
-	init_rot_matrix_z(&rotation, angle.z);
-	transformed_point =  transformation(rotation, transformed_point);
-	return (transformed_point);
-}
-
-t_point	rotation_x_left(t_point point, t_rotated_angle angle)
-{
-	t_matrix	rotation;
-	t_point		transformed_point;
-	
-	init_rot_matrix_x(&rotation, angle.x);
-	transformed_point =  transformation(rotation, point);
-	init_rot_matrix_y(&rotation, angle.y);
-	transformed_point =  transformation(rotation, transformed_point);
-	init_rot_matrix_z(&rotation, angle.z);
-	transformed_point =  transformation(rotation, transformed_point);
-	return (transformed_point);
-}
-
-t_point	rotation_y_right(t_point point, t_rotated_angle angle)
-{
-	t_matrix	rotation;
-	t_point		transformed_point;
-	
-	init_rot_matrix_x(&rotation, angle.x);
-	transformed_point =  transformation(rotation, point);
-	init_rot_matrix_y(&rotation, angle.y);
-	transformed_point =  transformation(rotation, transformed_point);
-	init_rot_matrix_z(&rotation, angle.z);
-	transformed_point =  transformation(rotation, transformed_point);
-	return (transformed_point);
-}
-
-t_point	rotation_y_left(t_point point, t_rotated_angle angle)
+t_point	step_rotation(t_point point, t_rotated_angle angle)
 {
 	t_matrix	rotation;
 	t_point		transformed_point;
@@ -127,7 +76,7 @@ void	init_rot_matrix_x(t_matrix	*rotation, float degrees)
 {
 	float angle;
 
-	angle = 2*M_PI * degrees / 360;
+	angle = 2* M_PI * degrees / 360;
 	rotation->r1[0] = 1;
 	rotation->r1[1] = 0;
 	rotation->r1[2] = 0;
@@ -146,7 +95,7 @@ void	init_rot_matrix_y(t_matrix	*rotation, float degrees)
 {
 	float angle;
 
-	angle = 2*M_PI * degrees / 360;
+	angle = 2 * M_PI * degrees / 360;
 	rotation->r1[0] = cos(angle);
 	rotation->r1[1] = 0;
 	rotation->r1[2] = sin(angle);

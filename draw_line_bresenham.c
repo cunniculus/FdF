@@ -3,9 +3,8 @@
 t_list	*generate_points(t_list *map);
 t_list	*generate_rounded_points(t_list	*point_list);
 t_list	*generate_image(t_data *mlx);
-t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle));
+t_list	*generate_rotated_image(t_data *mlx, int keycode);
 int		key_hook(int keycode, t_data *mlx);
-int		rotation_event(int keycode, t_data *mlx);
 
 void full_color_screen(t_data img, int color)
 {
@@ -92,7 +91,10 @@ int	key_hook(int keycode, t_data *mlx)
 	ft_printf("key %d pressed\n!", keycode);
 	full_color_screen(*mlx, 0x0);  
 	if (keycode >= L_ARROW && keycode <= D_ARROW)
-		rotation_event(keycode, mlx);
+	{
+		mlx->transformed_map = generate_rotated_image(mlx, keycode);
+		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
+	}
 	else if (keycode == ESC)
 	{
 		mlx_destroy_image(mlx->mlx_ptr, mlx->img);
@@ -104,38 +106,13 @@ int	key_hook(int keycode, t_data *mlx)
 	return (0);
 }
 
-int	rotation_event(int keycode, t_data *mlx)
-{
-	if (keycode == R_ARROW)
-	{
-		mlx->transformed_map = generate_rotated_image(mlx, rotation_x_right);
-		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-	}
-	else if (keycode == 65361)
-	{
-		mlx->transformed_map = generate_rotated_image(mlx, rotation_x_left);
-		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-	}
-	else if (keycode == U_ARROW)
-	{
-		mlx->transformed_map = generate_rotated_image(mlx, rotation_y_right);
-		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-	}
-	else if (keycode == D_ARROW)
-	{
-		mlx->transformed_map = generate_rotated_image(mlx, rotation_y_left);
-		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-	}
-	return (0);
-}
-
-t_list	*generate_rotated_image(t_data *mlx, t_point (*rotation)(t_point, t_rotated_angle))
+t_list	*generate_rotated_image(t_data *mlx, int keycode)
 {
 	t_list	*transformed_map;
 	t_list	*isometric;
 	mlx->bounds = map_boundaries(mlx->transformed_map);
-	isometric = step_rotation(mlx->transformed_map, isometric_rotation);
-	transformed_map = step_rotation(isometric, rotation);
+	isometric = rotation(mlx->transformed_map, 0);
+	transformed_map = rotation(isometric, keycode);
 	transformed_map = scale(transformed_map, mlx->bounds);
 	transformed_map = translate(transformed_map);
 	transformed_map = generate_rounded_points(transformed_map);
@@ -151,7 +128,7 @@ t_list	*generate_image(t_data *mlx)
 	t_list	*transformed_map;
 
 	mlx->bounds = map_boundaries(mlx->transformed_map);
-	transformed_map = step_rotation(mlx->transformed_map, isometric_rotation);
+	transformed_map = rotation(mlx->transformed_map, 0);
 	transformed_map = scale(transformed_map, mlx->bounds);
 	/*
 	mlx->bounds = map_boundaries(transformed_map);
