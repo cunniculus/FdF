@@ -5,7 +5,8 @@ SOURCE			:=	fdf_utils.c\
 					translate.c\
 					read_file.c\
 					bresenham.c\
-					draw_line_bresenham.c
+					draw_line_bresenham.c\
+					event_handlers.c
 
 OBJ				:= $(SOURCE:.c=.o)
 

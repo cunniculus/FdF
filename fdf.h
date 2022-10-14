@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 12:17:26 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:30:27 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,5 +188,14 @@ t_list	*translate(t_list *map);
 t_ext	map_boundaries(t_list *list);
 t_ext	min_coord(t_list *list, t_ext *bound);
 t_ext	max_coord(t_list *list, t_ext *bound);
+
+
+// events
+int		key_hook(int keycode, t_data *mlx);
+int		handle_no_event(void *data);
+int		redraw_expose(t_data *vars);
+
+// drawing
+void	full_color_screen(t_data img, int color);
 
 #endif

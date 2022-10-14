@@ -6,13 +6,11 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:10 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 12:17:34 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:30:32 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int		key_hook(int keycode, t_data *mlx);
 
 void	full_color_screen(t_data img, int color)
 {
@@ -32,12 +30,6 @@ void	full_color_screen(t_data img, int color)
 	}
 }
 
-/* This function needs to exist, but it is useless for the moment */
-int	handle_no_event(void *data)
-{
-	return (*((int *)data));
-}
-
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -46,12 +38,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	redraw_expose(t_data *vars)
-{
-	ft_printf("redraw ");
-	mlx_put_image_to_window(vars->mlx_ptr, vars->win_ptr, vars->img, 0, 0);
-	return (0);
-}
+
 
 int	main(int argc, char **argv)
 {
@@ -73,27 +60,6 @@ int	main(int argc, char **argv)
 	free(mlx.mlx_ptr);
 	ft_lstclear(&mlx.map, free);
 	ft_lstclear(&mlx.transformed_map, free);
-	return (0);
-}
-
-int	key_hook(int keycode, t_data *mlx)
-{
-	ft_printf("key %d pressed\n!", keycode);
-	full_color_screen(*mlx, 0x0);
-	if ((keycode >= L_ARROW && keycode <= D_ARROW) || keycode == LETTER_A || \
-		keycode == LETTER_S)
-	{
-		mlx->transformed_map = generate_image(mlx, keycode);
-		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-	}
-	else if (keycode == ESC)
-	{
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img);
-		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-		mlx_destroy_display(mlx->mlx_ptr);
-		free(mlx->mlx_ptr);
-		exit(0);
-	}
 	return (0);
 }
 
