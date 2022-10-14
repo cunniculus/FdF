@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:48:40 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:01:08 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ enum
 	R_ARROW = 65363,
 	D_ARROW = 65364,
 	LETTER_A = 97,
-	LETTER_s = 115
+	LETTER_S = 115
 };
 
 /*
@@ -193,14 +193,12 @@ t_list	*normalize(t_list *map);
 t_point	max_coord_values(t_list	*list);
 t_point	min_coord_values(t_list	*list);
 
-
 // scale
 t_list  *scale(t_list *map, t_boundaries bound);
 void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range);
 
 // translate
 t_list	*translate(t_list *map);
-void	init_transl_matrix(t_matrix	*matrix);
 t_boundaries	map_boundaries(t_list *list);
 t_boundaries	min_coord(t_list *list, t_boundaries *bound);
 t_boundaries	max_coord(t_list *list, t_boundaries *bound);

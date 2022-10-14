@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   translate.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guolive <guolivei@student.42sp.org.br>     +#+  +:+       +#+        */
+/*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:06:50 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:06:51 by guolive          ###   ########.fr       */
+/*   Updated: 2022/10/13 21:58:59 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,6 @@ t_list	*translate(t_list *map)
 	}	
 	ft_lstclear(&map, free);
 	return (translated);
-}
-
-
-void	init_transl_matrix(t_matrix	*matrix)
-{
-	matrix->r1[0] = 1;
-	matrix->r1[1] = 0;
-	matrix->r1[2] = 100;
-
-	matrix->r2[0] = 0;
-	matrix->r2[1] = 1;
-	matrix->r2[2] = 90;
-
-	matrix->r3[0] = 0;
-	matrix->r3[1] = 0;
-	matrix->r3[2] = 1;
 }
 
 t_boundaries	map_boundaries(t_list *list)

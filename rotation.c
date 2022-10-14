@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:03:52 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:48:40 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/13 21:59:59 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_list	*rotation(t_list *map, int keycode)
 		point = malloc(sizeof (t_point));
 		*point = *((t_point *)map->content);
 		if ((keycode >= L_ARROW && keycode <= D_ARROW) || keycode == LETTER_A\
-		 || keycode == LETTER_s)
+		 || keycode == LETTER_S)
 
 			*point = step_rotation(*point, angle);
 		else if (!keycode)
@@ -49,7 +49,7 @@ t_rotated_angle	get_angle(t_rotated_angle angle, int keycode)
 		angle.y = (angle.y  - ROTATION_STEP) % 360;
 	else if (keycode == LETTER_A)
 		angle.z = (angle.z + ROTATION_STEP) % 360;
-	else if (keycode == LETTER_s)
+	else if (keycode == LETTER_S)
 		angle.z = (angle.z - ROTATION_STEP) % 360;
 	return (angle);
 }
