@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 12:35:30 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:46:13 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ enum
 	ON_MOUSEMOVE = 6,
 	ON_EXPOSE = 12,
 	ON_DESTROY = 17,
-	ESC = 65307,
+	ESCAPE = 65307,
 	L_ARROW = 65361,
 	U_ARROW = 65362,
 	R_ARROW = 65363,

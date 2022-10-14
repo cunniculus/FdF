@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 12:05:18 by guolivei          #+#    #+#             */
-/*   Updated: 2022/10/14 16:15:44 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:45:17 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	setup_mlx(t_data *mlx)
 	mlx->mlx_ptr = mlx_init();
 	if (!mlx->mlx_ptr)
 		return (0);
-	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HIGHT, "Hello world!");
+	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HIGHT, "Fil de Fer");
 	if (!mlx->win_ptr)
 	{
 		free(mlx->win_ptr);
