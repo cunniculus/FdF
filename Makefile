@@ -1,13 +1,15 @@
 NAME			:=	program
 SOURCE			:=	fdf_utils.c\
 					rotation.c\
+					init_rotation.c\
 					scale.c\
 					translate.c\
 					read_file.c\
 					bresenham.c\
 					fdf.c\
 					event_handlers.c\
-					plot.c
+					plot.c\
+					transformation.c
 
 OBJ				:= $(SOURCE:.c=.o)
 

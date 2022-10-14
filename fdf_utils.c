@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 12:05:18 by guolivei          #+#    #+#             */
-/*   Updated: 2022/10/14 12:17:39 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:15:44 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	setup_mlx(t_data *mlx)
 			&mlx->line_length, &mlx->endian);
 	return (42);
 }
-
 
 int	setup_map(t_data *mlx, char *filename)
 {

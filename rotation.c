@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:03:52 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 10:47:23 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:27:06 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,70 +77,4 @@ t_point	step_rotation(t_point point, t_angle angle)
 	init_rot_matrix_z(&rotation, angle.z);
 	transformed_point = transformation(rotation, transformed_point);
 	return (transformed_point);
-}
-
-t_point	transformation(t_matrix matrix, t_point point)
-{
-	t_point	transformed_point;
-
-	transformed_point.x = dot_product(matrix.r1, point);
-	transformed_point.y = dot_product(matrix.r2, point);
-	transformed_point.z = dot_product(matrix.r3, point);
-	return (transformed_point);
-}
-
-void	init_rot_matrix_x(t_matrix	*rotation, float degrees)
-{
-	float	angle;
-
-	angle = 2 * M_PI * degrees / 360;
-	rotation->r1[0] = 1;
-	rotation->r1[1] = 0;
-	rotation->r1[2] = 0;
-	rotation->r2[0] = 0;
-	rotation->r2[1] = cos(angle);
-	rotation->r2[2] = -sin(angle);
-	rotation->r3[0] = 0;
-	rotation->r3[1] = -rotation->r2[2];
-	rotation->r3[2] = rotation->r2[1];
-}
-
-void	init_rot_matrix_y(t_matrix	*rotation, float degrees)
-{
-	float	angle;
-
-	angle = 2 * M_PI * degrees / 360;
-	rotation->r1[0] = cos(angle);
-	rotation->r1[1] = 0;
-	rotation->r1[2] = sin(angle);
-	rotation->r2[0] = 0;
-	rotation->r2[1] = 1;
-	rotation->r2[2] = 0;
-	rotation->r3[0] = -rotation->r1[2];
-	rotation->r3[1] = 0;
-	rotation->r3[2] = rotation->r1[0];
-}
-
-void	init_rot_matrix_z(t_matrix	*rotation, float degrees)
-{
-	float	angle;
-
-	angle = 2 * M_PI * degrees / 360;
-	rotation->r1[0] = cos(angle);
-	rotation->r1[1] = -sin(angle);
-	rotation->r1[2] = 0;
-	rotation->r2[0] = -rotation->r1[1];
-	rotation->r2[1] = rotation->r1[0];
-	rotation->r2[2] = 0;
-	rotation->r3[0] = 0;
-	rotation->r3[1] = 0;
-	rotation->r3[2] = 1;
-}
-
-float	dot_product(float row[3], t_point point)
-{
-	float	dp;
-
-	dp = row[0] * point.x + row[1] * point.y + row[2] * point.z;
-	return (dp);
 }

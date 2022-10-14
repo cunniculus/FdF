@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:06:42 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 10:51:33 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:24:25 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_list	*scale(t_list *map, t_ext bound)
 	return (scaled);
 }
 
+/*
 void	init_scale_matrix(t_matrix *scale, float x_range, float y_range)
 {
 	if (x_range && y_range)
@@ -53,3 +54,4 @@ void	init_scale_matrix(t_matrix *scale, float x_range, float y_range)
 	scale->r3[1] = 0;
 	scale->r3[2] = 30;
 }
+*/
