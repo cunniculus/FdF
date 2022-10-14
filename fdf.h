@@ -6,71 +6,72 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 10:08:31 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 10:53:49 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-#include <stdio.h>	// perror()
-#include <string.h>	// strerror()
-#include <stdlib.h> // exit()
-#include <math.h>
-#include <mlx.h>
-#include "libft.h"
+# include <stdio.h>		// perror()
+# include <string.h>		// strerror()
+# include <stdlib.h>		// exit()
+# include <math.h>
+# include <mlx.h>
+# include "libft.h"
 
+# ifndef SCALE
+#  define SCALE 20
+# endif
 
-#ifndef SCALE
-# define SCALE 20
-#endif
+# ifndef TRANSLATION_X
+#  define TRANSLATION_X 300
+# endif
 
-#ifndef TRANSLATION_X
-# define TRANSLATION_X 300
-#endif
+# ifndef TRANSLATION_Y
+#  define TRANSLATION_Y 300
+# endif
 
-#ifndef TRANSLATION_Y
-# define TRANSLATION_Y 300
-#endif
+# ifndef ISOMETRIC_X_ANGLE
+#  define ISOMETRIC_X_ANGLE 35.264
+# endif
 
-#ifndef ISOMETRIC_X_ANGLE
-# define ISOMETRIC_X_ANGLE 35.264
-#endif
+# ifndef ISOMETRIC_Y_ANGLE
+#  define ISOMETRIC_Y_ANGLE 0
+# endif
 
-#ifndef ISOMETRIC_Y_ANGLE
-# define ISOMETRIC_Y_ANGLE 0
-#endif
+# ifndef ISOMETRIC_Z_ANGLE
+#  define ISOMETRIC_Z_ANGLE 45
+# endif
 
-#ifndef ISOMETRIC_Z_ANGLE
-# define ISOMETRIC_Z_ANGLE 45
-#endif
+# ifndef ROTATION_STEP
+#  define ROTATION_STEP 2
+# endif
 
-#ifndef ROTATION_STEP
-# define ROTATION_STEP 2
-#endif
+# ifndef WIDTH
+#  define WIDTH 900
+# endif
 
-#ifndef WIDTH
-# define WIDTH 900
-#endif
+# ifndef HIGHT
+#  define HIGHT 900
+# endif
 
-#ifndef HIGHT
-# define HIGHT 900
-#endif
+# ifndef PADDING
+#  define PADDING 100
+# endif
 
-#ifndef PADDING
-# define PADDING 100
-#endif
+# ifndef MLX_ERROR
+#  define MLX_ERROR -1
+# endif
 
-#define MLX_ERROR -1
-
-typedef struct s_rotated_angle
+typedef struct s_angle
 {
 	int	x;
-	int y;
-	int z;
-}	t_rotated_angle;
+	int	y;
+	int	z;
+}	t_angle;
 
-typedef struct s_boundaries
+typedef struct s_ext
 {
 	float	min_x;
 	float	min_y;
@@ -78,9 +79,9 @@ typedef struct s_boundaries
 	float	max_x;
 	float	max_y;
 	float	max_z;
-}	t_boundaries;
+}	t_ext;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	void	*img;
 	char	*addr;
@@ -91,9 +92,8 @@ typedef struct	s_data
 	t_list	*transformed_map;
 	void	*mlx_ptr;
 	void	*win_ptr;
-	t_boundaries	bounds;
+	t_ext	bounds;
 }	t_data;
-
 
 // isometric rotation matrix struct
 typedef struct s_matrix
@@ -104,7 +104,7 @@ typedef struct s_matrix
 }	t_matrix;
 
 // transformed point
-typedef struct	s_point
+typedef struct s_point
 {
 	float	x;
 	float	y;
@@ -112,14 +112,13 @@ typedef struct	s_point
 	int		color;
 }	t_point;
 
-typedef struct	s_rpoint
+typedef struct s_rpoint
 {
 	int	x;
 	int	y;
 	int	z;
-	int		color;
+	int	color;
 }	t_rpoint;
-
 
 enum
 {
@@ -146,7 +145,7 @@ typedef struct s_row_list
 	struct s_row_list	*next;
 }	t_row_list;
 */
-int	setup_mlx(t_data *mlx);
+int		setup_mlx(t_data *mlx);
 
 // linear transformation - matrix multiplication
 float	dot_product(float row[3], t_point point);
@@ -154,13 +153,12 @@ t_point	transformation(t_matrix rotation, t_point point);
 
 // rotations
 t_list	*rotation(t_list *map, int keycode);
-t_rotated_angle	get_angle(t_rotated_angle angle, int keycode);
-t_point isometric_rotation(t_point point);
-t_point	step_rotation(t_point point, t_rotated_angle angle);
+t_angle	get_angle(t_angle angle, int keycode);
+t_point	isometric_rotation(t_point point);
+t_point	step_rotation(t_point point, t_angle angle);
 void	init_rot_matrix_x(t_matrix *rotation, float degrees);
 void	init_rot_matrix_y(t_matrix *rotation, float degrees);
 void	init_rot_matrix_z(t_matrix *rotation, float degrees);
-
 
 // isometric_projection
 t_point	isometric_projection(t_point *point);
@@ -179,23 +177,22 @@ void	free_row(char **row);
 
 // draw_line
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int	redraw_expose(t_data *vars);
+int		redraw_expose(t_data *vars);
 void	plot(t_data img, t_list *transformed_map);
 
-
 //bresenham.c
-void plot_line_high(t_rpoint *point1, t_rpoint *point2, t_data img);
-void plot_line_low(t_rpoint *point1, t_rpoint *point2, t_data img);
-void plot_line(t_rpoint *point1, t_rpoint *point2, t_data img);
+void	plot_line_high(t_rpoint *point1, t_rpoint *point2, t_data img);
+void	plot_line_low(t_rpoint *point1, t_rpoint *point2, t_data img);
+void	plot_line(t_rpoint *point1, t_rpoint *point2, t_data img);
 
 // scale
-t_list  *scale(t_list *map, t_boundaries bound);
-void	init_scale_matrix(t_matrix  *scale, float x_range, float y_range);
+t_list	*scale(t_list *map, t_ext bound);
+void	init_scale_matrix(t_matrix *scale, float x_range, float y_range);
 
 // translate
 t_list	*translate(t_list *map);
-t_boundaries	map_boundaries(t_list *list);
-t_boundaries	min_coord(t_list *list, t_boundaries *bound);
-t_boundaries	max_coord(t_list *list, t_boundaries *bound);
+t_ext	map_boundaries(t_list *list);
+t_ext	min_coord(t_list *list, t_ext *bound);
+t_ext	max_coord(t_list *list, t_ext *bound);
 
 #endif

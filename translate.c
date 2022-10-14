@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:06:50 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 22:35:49 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 10:51:33 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ t_list	*translate(t_list *map)
 	return (translated);
 }
 
-t_boundaries	map_boundaries(t_list *list)
+t_ext	map_boundaries(t_list *list)
 {
-	t_boundaries	bound;
+	t_ext	bound;
 
 	max_coord(list, &bound);
 	min_coord(list, &bound);
 	return (bound);
 }
 
-t_boundaries	max_coord(t_list *list, t_boundaries *bound)
+t_ext	max_coord(t_list *list, t_ext *bound)
 {
 	bound->max_x = (float) INT_MIN;
 	bound->max_y = (float) INT_MIN;
@@ -60,7 +60,7 @@ t_boundaries	max_coord(t_list *list, t_boundaries *bound)
 	return (*bound);
 }
 
-t_boundaries	min_coord(t_list *list, t_boundaries *bound)
+t_ext	min_coord(t_list *list, t_ext *bound)
 {
 	bound->min_x = (float) INT_MAX;
 	bound->min_y = (float) INT_MAX;
