@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_line_bresenham.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guolive <guolivei@student.42sp.org.br>     +#+  +:+       +#+        */
+/*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:10 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:04:12 by guolive          ###   ########.fr       */
+/*   Updated: 2022/10/13 21:48:40 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ int	key_hook(int keycode, t_data *mlx)
 {
 	ft_printf("key %d pressed\n!", keycode);
 	full_color_screen(*mlx, 0x0);  
-	if (keycode >= L_ARROW && keycode <= D_ARROW)
+	if ((keycode >= L_ARROW && keycode <= D_ARROW) || keycode == LETTER_A\
+	 || keycode == LETTER_s)
 	{
 		mlx->transformed_map = generate_rotated_image(mlx, keycode);
 		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);

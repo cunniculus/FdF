@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isometric_rotation.c                               :+:      :+:    :+:   */
+/*   rotation.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guolive <guolivei@student.42sp.org.br>     +#+  +:+       +#+        */
+/*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:03:52 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:03:58 by guolive          ###   ########.fr       */
+/*   Updated: 2022/10/13 21:48:40 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ t_list	*rotation(t_list *map, int keycode)
 	{
 		point = malloc(sizeof (t_point));
 		*point = *((t_point *)map->content);
-		if (keycode >= L_ARROW && keycode <= D_ARROW)
+		if ((keycode >= L_ARROW && keycode <= D_ARROW) || keycode == LETTER_A\
+		 || keycode == LETTER_s)
+
 			*point = step_rotation(*point, angle);
 		else if (!keycode)
 			*point = isometric_rotation(*point);
@@ -45,6 +47,10 @@ t_rotated_angle	get_angle(t_rotated_angle angle, int keycode)
 		angle.y = (angle.y  + ROTATION_STEP) % 360;
 	else if (keycode == L_ARROW)
 		angle.y = (angle.y  - ROTATION_STEP) % 360;
+	else if (keycode == LETTER_A)
+		angle.z = (angle.z + ROTATION_STEP) % 360;
+	else if (keycode == LETTER_s)
+		angle.z = (angle.z - ROTATION_STEP) % 360;
 	return (angle);
 }
 

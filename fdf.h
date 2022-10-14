@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guolive <guolivei@student.42sp.org.br>     +#+  +:+       +#+        */
+/*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:04:06 by guolive          ###   ########.fr       */
+/*   Updated: 2022/10/13 21:48:40 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 #endif
 
 #ifndef ISOMETRIC_X_ANGLE 
-# define ISOMETRIC_X_ANGLE 34
+# define ISOMETRIC_X_ANGLE 35.264
 #endif
 
 #ifndef ISOMETRIC_Y_ANGLE 
@@ -42,7 +42,7 @@
 #endif
 
 #ifndef ISOMETRIC_Z_ANGLE 
-# define ISOMETRIC_Z_ANGLE 44
+# define ISOMETRIC_Z_ANGLE 45
 #endif
 
 #ifndef ROTATION_STEP
@@ -134,7 +134,9 @@ enum
 	L_ARROW = 65361,
 	U_ARROW = 65362,
 	R_ARROW = 65363,
-	D_ARROW = 65364
+	D_ARROW = 65364,
+	LETTER_A = 97,
+	LETTER_s = 115
 };
 
 /*
