@@ -12,7 +12,7 @@ LIBFT_SRC_LIST		:= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprin
 					ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c\
 					ft_putnbr_fd.c ft_lstnew.c ft_lstadd_front.c ft_lstsize.c\
 					ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c\
-					ft_lstiter.c ft_lstmap.c
+					ft_lstiter.c ft_lstmap.c ft_lstinode.c
 
 LIBFT_SRC			:= $(addprefix $(LIBFT_DIR)/, $(LIBFT_SRC_LIST))
 LIBFT_OBJ_LST		:= $(patsubst %.c, %.o, $(LIBFT_SRC_LIST))
@@ -42,21 +42,21 @@ $(NAME): $(LIBFT_OBJ) $(GNL_OBJ) $(FT_PRINTF_OBJ)
 	ar rcs $(NAME) $(LIBFT_OBJ) $(GNL_OBJ) $(FT_PRINTF_OBJ)
 
 $(OBJDIR)/%.o: $(LIBFT_DIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ $< 
+	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ $<
 
 $(OBJDIR)/%.o: $(GNL_DIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -DBUFFER_SIZE=42 -I$(INCLUDES) -o $@ $< 
+	$(CC) $(CFLAGS) -DBUFFER_SIZE=42 -I$(INCLUDES) -o $@ $<
 
 $(OBJDIR)/%.o: $(FT_PRINTF_DIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ $< 
+	$(CC) $(CFLAGS) -I$(INCLUDES) -o $@ $<
 
 $(OBJDIR):
 	mkdir obj
 
-clean: 
+clean:
 	rm -rf $(OBJDIR)
 
 fclean: clean
-	rm -f $(NAME) 
+	rm -f $(NAME)
 
 re: fclean all
