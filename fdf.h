@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 22:58:34 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 10:08:31 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,11 +187,6 @@ void	plot(t_data img, t_list *transformed_map);
 void plot_line_high(t_rpoint *point1, t_rpoint *point2, t_data img);
 void plot_line_low(t_rpoint *point1, t_rpoint *point2, t_data img);
 void plot_line(t_rpoint *point1, t_rpoint *point2, t_data img);
-
-// normalize
-t_list	*normalize(t_list *map);
-t_point	max_coord_values(t_list	*list);
-t_point	min_coord_values(t_list	*list);
 
 // scale
 t_list  *scale(t_list *map, t_boundaries bound);
