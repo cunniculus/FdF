@@ -6,7 +6,8 @@ SOURCE			:=	fdf_utils.c\
 					read_file.c\
 					bresenham.c\
 					draw_line_bresenham.c\
-					event_handlers.c
+					event_handlers.c\
+					plot.c
 
 OBJ				:= $(SOURCE:.c=.o)
 
