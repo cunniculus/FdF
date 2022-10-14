@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:06:50 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 21:58:59 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:35:49 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_list	*translate(t_list *map)
 
 	translated = NULL;
 	tmp = map;
-	while (tmp)	
+	while (tmp)
 	{
 		point = malloc(sizeof (t_point));
 		point->x = ((t_point *)tmp->content)->x + TRANSLATION_X;
@@ -28,7 +28,7 @@ t_list	*translate(t_list *map)
 		point->z = ((t_point *)tmp->content)->z;
 		ft_lstadd_back(&translated, ft_lstnew(point));
 		tmp = tmp->next;
-	}	
+	}
 	ft_lstclear(&map, free);
 	return (translated);
 }
@@ -42,10 +42,8 @@ t_boundaries	map_boundaries(t_list *list)
 	return (bound);
 }
 
-
 t_boundaries	max_coord(t_list *list, t_boundaries *bound)
 {
-
 	bound->max_x = (float) INT_MIN;
 	bound->max_y = (float) INT_MIN;
 	bound->max_z = (float) INT_MIN;
@@ -56,7 +54,7 @@ t_boundaries	max_coord(t_list *list, t_boundaries *bound)
 		if (((t_point *)list->content)->y > bound->max_y)
 			bound->max_y = ((t_point *)list->content)->y;
 		if (((t_point *)list->content)->z > bound->max_z)
-			bound->max_z = ((t_point*)list->content)->z;
+			bound->max_z = ((t_point *)list->content)->z;
 		list = list->next;
 	}
 	return (*bound);
@@ -64,7 +62,6 @@ t_boundaries	max_coord(t_list *list, t_boundaries *bound)
 
 t_boundaries	min_coord(t_list *list, t_boundaries *bound)
 {
-
 	bound->min_x = (float) INT_MAX;
 	bound->min_y = (float) INT_MAX;
 	bound->min_z = (float) INT_MAX;
