@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:32:31 by guolivei          #+#    #+#             */
-/*   Updated: 2022/10/14 15:56:10 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:08:48 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,32 +36,24 @@ void	plot_along_column(t_data mlx, t_list *map, int width, int total)
 	t_list		*tmp;
 	int			i;
 	int			j;
-	t_rpoint	point1;
-	t_rpoint	point2;
+	t_rpoint	*point1;
+	t_rpoint	*point2;
 
 	i = 0;
 	tmp = map;
 	while (tmp->next)
 	{
-		point1.x = ((t_rpoint *)tmp->content)->x;
-		point1.y = ((t_rpoint *)tmp->content)->y;
+		point1 = (t_rpoint *)tmp->content;
 		j = i;
 		while (width + i < total && j < width + i)
 		{
 			tmp = tmp->next;
 			j++;
 		}
-		point2.x = ((t_rpoint *)tmp->content)->x;
-		point2.y = ((t_rpoint *)tmp->content)->y;
-		plot_line(&point1, &point2, mlx);
+		point2 = (t_rpoint *)tmp->content;
+		plot_line(point1, point2, mlx);
 		i++;
-		j = 0;
-		tmp = map;
-		while (j < i)
-		{
-			tmp = tmp->next;
-			j++;
-		}
+		tmp = ft_lstinode(map, i);
 	}
 }
 
