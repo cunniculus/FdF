@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 12:25:10 by guolivei          #+#    #+#             */
-/*   Updated: 2022/10/14 18:07:23 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:12:14 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ int	redraw_expose(t_data *vars)
 
 void	kill_all(t_data *mlx)
 {
-
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img);
-		mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
-		mlx_destroy_display(mlx->mlx_ptr);
-		free(mlx->mlx_ptr);
-		ft_printf("Goob Bye!\n");
-		exit(0);
+	mlx_destroy_image(mlx->mlx_ptr, mlx->img);
+	mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+	mlx_destroy_display(mlx->mlx_ptr);
+	free(mlx->mlx_ptr);
+	ft_printf("Goob Bye!\n");
+	exit(0);
 }
