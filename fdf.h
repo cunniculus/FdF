@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/13 22:01:08 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:58:34 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,27 @@
 #include "libft.h"
 
 
-#ifndef SCALE 
+#ifndef SCALE
 # define SCALE 20
 #endif
 
-#ifndef TRANSLATION_X 
+#ifndef TRANSLATION_X
 # define TRANSLATION_X 300
 #endif
 
-#ifndef TRANSLATION_Y 
+#ifndef TRANSLATION_Y
 # define TRANSLATION_Y 300
 #endif
 
-#ifndef ISOMETRIC_X_ANGLE 
+#ifndef ISOMETRIC_X_ANGLE
 # define ISOMETRIC_X_ANGLE 35.264
 #endif
 
-#ifndef ISOMETRIC_Y_ANGLE 
+#ifndef ISOMETRIC_Y_ANGLE
 # define ISOMETRIC_Y_ANGLE 0
 #endif
 
-#ifndef ISOMETRIC_Z_ANGLE 
+#ifndef ISOMETRIC_Z_ANGLE
 # define ISOMETRIC_Z_ANGLE 45
 #endif
 
@@ -93,7 +93,7 @@ typedef struct	s_data
 	void	*win_ptr;
 	t_boundaries	bounds;
 }	t_data;
-	
+
 
 // isometric rotation matrix struct
 typedef struct s_matrix
@@ -112,13 +112,13 @@ typedef struct	s_point
 	int		color;
 }	t_point;
 
-typedef struct	s_rounded_point
+typedef struct	s_rpoint
 {
 	int	x;
 	int	y;
 	int	z;
 	int		color;
-}	t_rounded_point;
+}	t_rpoint;
 
 
 enum
@@ -152,7 +152,7 @@ int	setup_mlx(t_data *mlx);
 float	dot_product(float row[3], t_point point);
 t_point	transformation(t_matrix rotation, t_point point);
 
-// rotations 
+// rotations
 t_list	*rotation(t_list *map, int keycode);
 t_rotated_angle	get_angle(t_rotated_angle angle, int keycode);
 t_point isometric_rotation(t_point point);
@@ -165,7 +165,7 @@ void	init_rot_matrix_z(t_matrix *rotation, float degrees);
 // isometric_projection
 t_point	isometric_projection(t_point *point);
 void	print_point(t_point *point);
-void	print_rounded_point(t_rounded_point *point);
+void	print_rpoint(t_rpoint *point);
 
 //void	init_proj_matrix(t_proj_matrix *projection);
 //t_point	projection_transformation(t_proj_matrix projection, t_point *point);
@@ -184,9 +184,9 @@ void	plot(t_data img, t_list *transformed_map);
 
 
 //bresenham.c
-void plot_line_high(int x0, int y0, int x1, int y1, t_data img);
-void plot_line_low(int x0, int y0, int x1, int y1, t_data img);
-void plot_line(int x0, int y0, int x1, int y1, t_data img);
+void plot_line_high(t_rpoint *point1, t_rpoint *point2, t_data img);
+void plot_line_low(t_rpoint *point1, t_rpoint *point2, t_data img);
+void plot_line(t_rpoint *point1, t_rpoint *point2, t_data img);
 
 // normalize
 t_list	*normalize(t_list *map);
