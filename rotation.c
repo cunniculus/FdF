@@ -14,8 +14,8 @@
 
 t_list	*rotation(t_list *map, int keycode)
 {
-	t_list					*rotated;
-	t_point					*point;
+	t_list			*rotated;
+	t_point			*point;
 	static t_angle	angle;
 
 	angle = get_angle (angle, keycode);
