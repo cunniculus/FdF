@@ -6,15 +6,12 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:10 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 11:10:45 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:17:34 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_list	*generate_points(t_list *map);
-t_list	*generate_rounded_points(t_list	*point_list);
-t_list	*generate_image(t_data *mlx, int keycode);
 int		key_hook(int keycode, t_data *mlx);
 
 void	full_color_screen(t_data img, int color)
@@ -64,12 +61,8 @@ int	main(int argc, char **argv)
 		return (-2);
 	if (!setup_mlx(&mlx))
 		return (-3);
-	mlx.map = NULL;
-	get_map(argv[1], &mlx);
-	if (!(mlx.map))
-		return (-3);
-	mlx.transformed_map = generate_points(mlx.map);
-	generate_image(&mlx, 0);
+	if (!setup_map(&mlx, argv[1]))
+		return (-4);
 	mlx_put_image_to_window(mlx.mlx_ptr, mlx.win_ptr, mlx.img, 0, 0);
 	mlx_loop_hook(mlx.mlx_ptr, &handle_no_event, &mlx);
 	mlx_hook(mlx.win_ptr, ON_KEYDOWN, 1L << 0, key_hook, &mlx);
@@ -110,7 +103,6 @@ t_list	*generate_image(t_data *mlx, int keycode)
 	t_list	*isometric;
 
 	isometric = NULL;
-	mlx->bounds = map_boundaries(mlx->transformed_map);
 	transformed_map = rotation(mlx->transformed_map, 0);
 	if (keycode)
 	{
@@ -124,71 +116,6 @@ t_list	*generate_image(t_data *mlx, int keycode)
 	ft_lstclear(&transformed_map, free);
 	ft_lstclear(&isometric, free);
 	return (mlx->transformed_map);
-}
-
-t_list	*generate_points(t_list *map)
-{
-	t_list	*transformed_map;
-	t_point	*point;
-	int		i;
-	int		j;
-
-	transformed_map = NULL;
-	j = 0;
-	while (map)
-	{
-		i = 0;
-		while (((int *)map->content)[i] != INT_MIN)
-		{
-			point = malloc(sizeof (t_point));
-			point->x = i;
-			point->y = j;
-			point->z = ((int *)map->content)[i++];
-			ft_lstadd_back(&transformed_map, ft_lstnew(point));
-		}
-		map = map->next;
-		j++;
-	}
-	return (transformed_map);
-}
-
-t_list	*generate_rounded_points(t_list	*point_list)
-{
-	t_list		*rounded_list;
-	t_list		*tmp;
-	t_rpoint	*point;
-
-	rounded_list = NULL;
-	point = NULL;
-	tmp = point_list;
-	while (point_list)
-	{
-		point = malloc(sizeof (t_rpoint));
-		point->x = round(((t_point *)point_list->content)->x);
-		point->y = round(((t_point *)point_list->content)->y);
-		point->z = round(((t_point *)point_list->content)->z);
-		ft_lstadd_back(&rounded_list, ft_lstnew(point));
-		point_list = point_list->next;
-	}
-	ft_lstclear(&tmp, free);
-	return (rounded_list);
-}
-
-int	setup_mlx(t_data *mlx)
-{
-	mlx->mlx_ptr = mlx_init();
-	if (!mlx->mlx_ptr)
-		return (0);
-	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HIGHT, "Hello world!");
-	if (!mlx->win_ptr)
-	{
-		free(mlx->win_ptr);
-		return (0);
-	}
-	mlx->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HIGHT);
-	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, \
-			&mlx->line_length, &mlx->endian);
-	return (42);
 }
 
 void	plot(t_data mlx, t_list *transformed_map)

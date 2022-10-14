@@ -1,10 +1,11 @@
-NAME			:= program 
-SOURCE			:= rotation.c\
-				   scale.c\
-				   translate.c\
-				   read_file.c\
-				   bresenham.c\
-				   draw_line_bresenham.c
+NAME			:=	program
+SOURCE			:=	fdf_utils.c\
+					rotation.c\
+					scale.c\
+					translate.c\
+					read_file.c\
+					bresenham.c\
+					draw_line_bresenham.c
 
 OBJ				:= $(SOURCE:.c=.o)
 
@@ -18,12 +19,12 @@ MLX_INCLUDES	:= $(MLX_DIR)
 
 INCLUDES 		:= -I/usr/local/include -I$(MLX_INCLUDES) -I$(LIBFT_INCLUDES) -I.
 LIB_PATHS		:= -L/usr/local/lib -L$(MLX_DIR) -L$(LIBFT_DIR)
-LIBS			:= -lft -lmlx -lmlx_Linux -lXext -lX11 -lm 
+LIBS			:= -lft -lmlx -lmlx_Linux -lXext -lX11 -lm
 
 CFLAGS			:= -Wall -Wextra -Werror -O3
 
-all: $(NAME) 
-	
+all: $(NAME)
+
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ $(LIB_PATHS) $(LIBS) -o $@
 

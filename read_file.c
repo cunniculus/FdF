@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:06:33 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 11:43:32 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 11:45:20 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include "fdf.h"
 
 static t_list	*get_row(int fd, t_list **list);
-static int	*make_row_int(char **row_str);
-static int	get_row_size(char **row_str);
-static void	free_row(char **row);
+static int		*make_row_int(char **row_str);
+static int		get_row_size(char **row_str);
+static void		free_row(char **row);
 
 t_list	*get_map(char *map_name, t_data *mlx)
 {

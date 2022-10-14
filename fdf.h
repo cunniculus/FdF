@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 11:43:10 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:17:26 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define FDF_H
 
 # include <stdio.h>		// perror()
-# include <string.h>		// strerror()
-# include <stdlib.h>		// exit()
+# include <string.h>	// strerror()
+# include <stdlib.h>	// exit()
 # include <math.h>
 # include <mlx.h>
 # include "libft.h"
@@ -138,14 +138,12 @@ enum
 	LETTER_S = 115
 };
 
-/*
-typedef struct s_row_list
-{
-	int					*row;
-	struct s_row_list	*next;
-}	t_row_list;
-*/
+// startup config and default image
 int		setup_mlx(t_data *mlx);
+int		setup_map(t_data *mlx, char *filename);
+t_list	*generate_image(t_data *mlx, int keycode);
+t_list	*generate_rounded_points(t_list	*point_list);
+
 
 // linear transformation - matrix multiplication
 float	dot_product(float row[3], t_point point);
