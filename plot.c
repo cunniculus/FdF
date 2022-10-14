@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/14 15:32:31 by guolivei          #+#    #+#             */
-/*   Updated: 2022/10/14 15:54:09 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 15:56:10 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ void	plot_along_row(t_data mlx, t_list *map, int width)
 	}
 }
 
-void 	plot_along_column(t_data mlx, t_list *map, int width, int total)
+void	plot_along_column(t_data mlx, t_list *map, int width, int total)
 {
-	t_list	*tmp;
-	int i;
-	int j;
-	t_rpoint point1;
-	t_rpoint point2;
+	t_list		*tmp;
+	int			i;
+	int			j;
+	t_rpoint	point1;
+	t_rpoint	point2;
+
 	i = 0;
 	tmp = map;
 	while (tmp->next)
@@ -64,7 +65,6 @@ void 	plot_along_column(t_data mlx, t_list *map, int width, int total)
 	}
 }
 
-
 void	plot(t_data mlx, t_list *transformed_map)
 {
 	int			total;
@@ -82,10 +82,4 @@ void	plot(t_data mlx, t_list *transformed_map)
 	}
 	plot_along_row(mlx, transformed_map, x);
 	plot_along_column(mlx, transformed_map, x, total);
-
-
-
-
-
-
 }
