@@ -5,7 +5,7 @@ SOURCE			:=	fdf_utils.c\
 					translate.c\
 					read_file.c\
 					bresenham.c\
-					draw_line_bresenham.c\
+					fdf.c\
 					event_handlers.c\
 					plot.c
 
