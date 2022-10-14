@@ -1,6 +1,5 @@
 NAME			:= program 
-SOURCE			:= isometric_projection.c\
-				   isometric_rotation.c\
+SOURCE			:= isometric_rotation.c\
 				   scale.c\
 				   translate.c\
 				   read_file.c\
