@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 10:53:49 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 11:43:10 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,6 @@ void	print_rpoint(t_rpoint *point);
 
 // read_file
 t_list	*get_map(char *map_name, t_data *mlx);
-t_list	*get_row(int fd, t_list **list);
-int		get_row_size(char **row_str);
-int		*make_row_int(char **row_str);
-void	free_row(char **row);
 
 // draw_line
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
