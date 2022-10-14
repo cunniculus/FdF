@@ -6,7 +6,7 @@
 /*   By: guolivei <guolivei@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 21:04:03 by guolive           #+#    #+#             */
-/*   Updated: 2022/10/14 12:30:27 by guolivei         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:35:30 by guolivei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ typedef struct s_ext
 	float	max_x;
 	float	max_y;
 	float	max_z;
+	int		width;
+	int		hight;
 }	t_ext;
 
 typedef struct s_data
